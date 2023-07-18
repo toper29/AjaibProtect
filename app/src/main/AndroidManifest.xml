@@ -27,8 +27,12 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <activity
+            android:name=".TipsAndSupportActivity"
+            android:label="Tips and Support"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
     </application>
 
 </manifest>
-
 

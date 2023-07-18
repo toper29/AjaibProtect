@@ -91,8 +91,9 @@
         android:layout_marginTop="475dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/tipsandsupport"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:src="@drawable/tipsandsupport"
+        android:contentDescription="TODO"
+        android:onClick="openTipsAndSupportActivity" />
 
     <ImageButton
         android:id="@+id/imagebackup"

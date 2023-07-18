@@ -3,9 +3,9 @@ package com.example.ajaibprotect
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
-import com.example.ajaibprotect.R
 
 class MainActivity : AppCompatActivity() {
     private val delayMillis: Long = 5000 // Waktu penundaan dalam milidetik
@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         // Set gambar di ImageView
         imageView.setImageResource(R.drawable.tampilanawal) // Ganti "your_image" dengan nama gambar yang ingin ditampilkan
 
-        // Membuat objek Handler
-        val handler = Handler()
+        // Membuat objek Handler dengan menggunakan Looper dari Main (UI) Thread
+        val handler = Handler(Looper.getMainLooper())
 
         // Membuat objek Runnable
         val runnable = Runnable {
@@ -34,4 +34,3 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed(runnable, delayMillis)
     }
 }
-

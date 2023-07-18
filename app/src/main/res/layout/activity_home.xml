@@ -45,10 +45,7 @@
         android:id="@+id/imagescanning"
         android:layout_width="147dp"
         android:layout_height="143dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="132dp"
         android:layout_marginTop="135dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
@@ -112,3 +109,4 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
 </RelativeLayout>
+

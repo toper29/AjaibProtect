@@ -108,8 +108,7 @@
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/backupandreset"
-        android:onClick="openBackupAndResetSettings"
-        tools:ignore="OnClick" />
+        android:onClick="openBackupAndResetSettings" />
 
 </RelativeLayout>
 

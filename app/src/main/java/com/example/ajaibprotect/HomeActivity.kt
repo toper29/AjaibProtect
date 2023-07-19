@@ -13,19 +13,19 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // Fungsi untuk membuka halaman TipsAndSupportActivity
-    fun openTipsAndSupportActivity() {
+    fun openTipsAndSupportActivity(view: View) {
         val intent = Intent(this, TipsAndSupportActivity::class.java)
         startActivity(intent)
     }
 
     // Fungsi untuk membuka pengaturan bagian Backup & Reset
-    fun openBackupAndResetSettings() {
+    fun openBackupAndResetSettings(view: View) {
         val intent = Intent(Settings.ACTION_PRIVACY_SETTINGS)
         startActivity(intent)
     }
 
     // Fungsi untuk membuka pengaturan bagian Security
-    fun openSecuritySettings() {
+    fun openSecuritySettings(view: View) {
         val intent = Intent(Settings.ACTION_SECURITY_SETTINGS)
         startActivity(intent)
     }

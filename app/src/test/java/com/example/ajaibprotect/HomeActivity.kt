@@ -12,4 +12,5 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun openSecuritySettings(view: View) {}
+    fun openBackupAndResetSettings(view: View) {}
 }

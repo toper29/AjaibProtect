@@ -29,4 +29,10 @@ class HomeActivity : AppCompatActivity() {
         val intent = Intent(Settings.ACTION_SECURITY_SETTINGS)
         startActivity(intent)
     }
+
+    /// Fungsi untuk membuka InfoActivity
+    fun openInfoActivity(view: View) {
+        val intent = Intent(this, InfoActivity::class.java)
+        startActivity(intent)
+    }
 }

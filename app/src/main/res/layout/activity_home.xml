@@ -37,9 +37,12 @@
         android:layout_toEndOf="@id/colorBlock"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
+        android:tint="@android:color/white"
         android:src="@drawable/info"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:contentDescription="TODO" />
+        android:onClick="openInfoActivity"
+        android:contentDescription="TODO"
+        tools:ignore="OnClick" />
+
 
     <ImageButton
         android:id="@+id/imagescanning"

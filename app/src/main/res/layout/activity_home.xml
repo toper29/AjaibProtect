@@ -78,7 +78,7 @@
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/securitycontrol"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:onClick="openSecuritySettings" />
 
     <ImageButton
         android:id="@+id/imagetipsandsupport"
@@ -93,7 +93,8 @@
         android:scaleType="fitCenter"
         android:src="@drawable/tipsandsupport"
         android:contentDescription="TODO"
-        android:onClick="openTipsAndSupportActivity" />
+        android:onClick="openTipsAndSupportActivity"
+        tools:ignore="OnClick" />
 
     <ImageButton
         android:id="@+id/imagebackup"
@@ -107,7 +108,8 @@
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/backupandreset"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:onClick="openBackupAndResetSettings"
+        tools:ignore="OnClick" />
 
 </RelativeLayout>
 

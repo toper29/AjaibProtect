@@ -5,7 +5,7 @@ import android.support.v4.widget.TextViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.ImageButton
 import android.widget.TextView
-import com.example.ajaibprotect.R
+
 
 class TipsAndSupportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +57,7 @@ class TipsAndSupportActivity : AppCompatActivity() {
 
         val imageButtonBack = findViewById<ImageButton>(R.id.imageButtonback)
         imageButtonBack.setOnClickListener {
-            onBackPressed() // Fungsi untuk kembali ke halaman sebelumnya
+            finish() // Fungsi untuk menutup activity
         }
     }
 }

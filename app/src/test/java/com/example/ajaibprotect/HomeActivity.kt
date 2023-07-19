@@ -2,6 +2,7 @@ package com.example.ajaibprotect
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.example.ajaibprotect.R
 
 class HomeActivity : AppCompatActivity() {
@@ -9,4 +10,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
     }
+
+    fun openSecuritySettings(view: View) {}
 }

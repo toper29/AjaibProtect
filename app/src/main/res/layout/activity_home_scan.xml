@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".HomeActivity">
+    tools:context=".HomeScanningActivity"
+    tools:ignore="ExtraText">
+
 
     <View
         android:id="@+id/colorBlock"
@@ -43,6 +45,28 @@
         android:src="@drawable/info"
         android:tint="@android:color/white"
         tools:ignore="OnClick" />
+
+
+    <Button
+        android:id="@+id/buttonUserApps"
+        android:layout_width="209dp"
+        android:layout_height="55dp"
+        android:background="#327987"
+        android:text="User Apps"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/colorBlock"
+    android:layout_alignParentStart="true" />
+
+
+    <Button
+        android:id="@+id/buttonSystemApps"
+        android:layout_width="205dp"
+        android:layout_height="55dp"
+        android:background="#327987"
+        android:text="System Apps"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/colorBlock"
+    android:layout_alignParentEnd="true" />
 
     <ImageButton
         android:id="@+id/imagescanning"

@@ -20,15 +20,20 @@ class InfoActivity : AppCompatActivity() {
             
             Aplikasi Deteksi Malware adalah solusi anda untuk melindungi perangkat Android Anda dari ancaman malware yang merusak. Dikembangkan dengan teknologi terdepan, aplikasi ini memberikan keamanan tingkat lanjut untuk menjaga privasi dan kinerja perangkat Anda tetap optimal.
             Fitur Utama:
-            1.  Pendeteksian Malware yang Canggih: Aplikasi ini menggunakan algoritma canggih untuk mendeteksi dan menghapus berbagai jenis malware yang mengancam perangkat Anda.
+            1.  Pendeteksian Malware yang Canggih:
+            Aplikasi ini menggunakan algoritma canggih untuk mendeteksi dan menghapus berbagai jenis malware yang mengancam perangkat Anda.
             
-            2. Pemindaian Cepat dan Mendalam: Lakukan pemindaian cepat atau mendalam untuk menemukan dan menghapus malware dengan efektif.
+            2. Pemindaian Cepat dan Mendalam: 
+            Lakukan pemindaian cepat atau mendalam untuk menemukan dan menghapus malware dengan efektif.
             
-            3. Proteksi Aktif: Aplikasi kami memberikan perlindungan 24/7 dengan pembaruan otomatis dan pemantauan yang terus-menerus.
+            3. Proteksi Aktif: 
+            Aplikasi kami memberikan perlindungan 24/7 dengan pembaruan otomatis dan pemantauan yang terus-menerus.
             
-            4. Blokir Aplikasi Berbahaya: Identifikasi dan blokir aplikasi berbahaya sebelum mereka dapat merusak perangkat Anda.
+            4. Blokir Aplikasi Berbahaya: 
+            Identifikasi dan blokir aplikasi berbahaya sebelum mereka dapat merusak perangkat Anda.
             
-            5. Peningkatan Kinerja: Selain deteksi malware, aplikasi ini juga membantu meningkatkan kinerja perangkat dengan membersihkan file cache yang tidak perlu dan mengoptimalkan penggunaan memori.
+            5. Peningkatan Kinerja: 
+            Selain deteksi malware, aplikasi ini juga membantu meningkatkan kinerja perangkat dengan membersihkan file cache yang tidak perlu dan mengoptimalkan penggunaan memori.
             </body></html>
         """.trimIndent()
 

@@ -30,9 +30,17 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
     /// Fungsi untuk membuka InfoActivity
     fun openInfoActivity(view: View) {
         val intent = Intent(this, InfoActivity::class.java)
+        startActivity(intent)
+    }
+
+
+    // Fungsi untuk membuka ScanningHomeActivity
+    fun openScanningHomeActivity(view: View) {
+        val intent = Intent(this, ScanningHomeActivity::class.java)
         startActivity(intent)
     }
 }

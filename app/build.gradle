@@ -41,6 +41,7 @@ android {
         // Enable the line below if you want to enable the lint checks for release builds
         //abortOnError false
     }
+    namespace 'com.example.ajaibprotect'
 }
 
 dependencies {

@@ -70,19 +70,20 @@
 
     <ImageButton
         android:id="@+id/imagescanning"
-        android:layout_width="147dp"
-        android:layout_height="143dp"
+        android:layout_width="110dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="160dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/scanning"
+        android:onClick="openScanningHomeActivity"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/imageincident"
-        android:layout_width="143dp"
-        android:layout_height="118dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -95,8 +96,8 @@
 
     <ImageButton
         android:id="@+id/imagetipsandsupport"
-        android:layout_width="143dp"
-        android:layout_height="118dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -111,8 +112,8 @@
 
     <ImageButton
         android:id="@+id/imagebackup"
-        android:layout_width="143dp"
-        android:layout_height="118dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -125,8 +126,8 @@
 
     <ImageButton
         android:id="@+id/imagesecurityco"
-        android:layout_width="143dp"
-        android:layout_height="118dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

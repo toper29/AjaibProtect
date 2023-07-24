@@ -14,8 +14,8 @@ class InfoActivity : AppCompatActivity() {
 
         val textView = findViewById<TextView>(R.id.textView)
         textView.text = """
-            AjaibShield - Aplikasi Perlindungan Keamanan 
-            dari Lab bernama Ajaib
+            AjaibProtect - Aplikasi Perlindungan Keamanan 
+            dari Lab bernama Ajaib dari Unika Atma Jaya
             Versi 1.0
             
             Aplikasi Deteksi Malware adalah solusi anda untuk melindungi perangkat Android Anda dari ancaman malware yang merusak. Dikembangkan dengan teknologi terdepan, aplikasi ini memberikan keamanan tingkat lanjut untuk menjaga privasi dan kinerja perangkat Anda tetap optimal.

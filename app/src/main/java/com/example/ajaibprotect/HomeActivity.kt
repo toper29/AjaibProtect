@@ -43,4 +43,9 @@ class HomeActivity : AppCompatActivity() {
         val intent = Intent(this, ScanningHomeActivity::class.java)
         startActivity(intent)
     }
+
+    fun openIncidentActivity(view: View) {
+        val intent = Intent(this, IncidentActivity::class.java)
+        startActivity(intent)
+    }
 }

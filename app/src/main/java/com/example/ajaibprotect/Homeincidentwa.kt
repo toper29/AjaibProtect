@@ -11,9 +11,4 @@ class Homeincidentwa : AppCompatActivity() {
         setContentView(R.layout.activity_home_incident_wa)
     }
 
-    /// Fungsi untuk membuka InfoActivity
-    fun openInfoActivity(view: View) {
-        val intent = Intent(this, InfoActivity::class.java)
-        startActivity(intent)
-    }
 }

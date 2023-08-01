@@ -1,5 +1,6 @@
 package com.example.ajaibprotect
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ImageButton
@@ -13,6 +14,12 @@ class IncidentActivity : AppCompatActivity() {
         imageButtonBack.setOnClickListener {
             finish() // Fungsi untuk menutup activity
         }
-    }
 
+        val imageButtonIncidentWa = findViewById<ImageButton>(R.id.imageincidentwa)
+        imageButtonIncidentWa.setOnClickListener {
+            // Buka Homeincidentwa Activity
+            val intent = Intent(this, Homeincidentwa::class.java)
+            startActivity(intent)
+        }
+    }
 }

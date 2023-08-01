@@ -61,7 +61,7 @@
         <ImageButton
             android:id="@+id/imageincidentbrowser"
             android:layout_width="100dp"
-            android:layout_height="80dp"
+            android:layout_height="85dp"
             android:layout_toEndOf="@id/imageincidentwa"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"

@@ -34,7 +34,7 @@ class InfoActivity : AppCompatActivity() {
             
             5. Peningkatan Kinerja: 
             Selain deteksi malware, aplikasi ini juga membantu meningkatkan kinerja perangkat dengan membersihkan file cache yang tidak perlu dan mengoptimalkan penggunaan memori.
-            </body></html>
+            -Toper 2019-
         """.trimIndent()
 
         TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(

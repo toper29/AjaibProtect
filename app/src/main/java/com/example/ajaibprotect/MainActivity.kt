@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
 
 class MainActivity : AppCompatActivity() {
-    private val delayMillis: Long = 5000 // Waktu penundaan dalam milidetik
+    private val delayMillis: Long = 3000 // Waktu penundaan dalam milidetik
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

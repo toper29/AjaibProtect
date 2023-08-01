@@ -47,7 +47,7 @@
         android:layout_width="261dp"
         android:layout_height="61dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="200dp"
         android:background="#286181"
         android:text="Scanning Online"
         android:textColor="#FFFFFF"

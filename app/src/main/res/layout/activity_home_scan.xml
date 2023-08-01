@@ -70,8 +70,8 @@
 
     <ImageButton
         android:id="@+id/imagescanning"
-        android:layout_width="110dp"
-        android:layout_height="100dp"
+        android:layout_width="140dp"
+        android:layout_height="120dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="160dp"
         android:background="@android:color/transparent"
@@ -82,8 +82,8 @@
 
     <ImageButton
         android:id="@+id/imageincident"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -96,8 +96,8 @@
 
     <ImageButton
         android:id="@+id/imagetipsandsupport"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -112,8 +112,8 @@
 
     <ImageButton
         android:id="@+id/imagebackup"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -126,8 +126,8 @@
 
     <ImageButton
         android:id="@+id/imagesecurityco"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

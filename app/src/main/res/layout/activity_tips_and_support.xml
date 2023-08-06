@@ -29,8 +29,8 @@
             android:layout_marginTop="32dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:tint="@android:color/white"
-            app:srcCompat="?attr/homeAsUpIndicator" />
+            app:srcCompat="?attr/homeAsUpIndicator"
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/textAjaibProtect"

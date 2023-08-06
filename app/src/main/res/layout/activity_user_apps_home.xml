@@ -12,15 +12,28 @@
         android:layout_height="90dp"
         android:background="#286181" />
 
+    <ImageButton
+        android:id="@+id/imageButtonback"
+        android:layout_width="50dp"
+        android:layout_height="37dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:srcCompat="?attr/homeAsUpIndicator"
+        app:tint="@android:color/white"
+        android:onClick="onBackButtonClick" />
+
+
     <TextView
         android:id="@+id/textAjaibProtect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="Ajaib Protect"
+        android:text="@string/ajaib_protect"
         android:textColor="#FFFFFF"
         android:textSize="25sp" />
 

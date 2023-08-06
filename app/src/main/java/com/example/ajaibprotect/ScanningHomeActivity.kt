@@ -18,7 +18,7 @@ class ScanningHomeActivity : AppCompatActivity() {
 
         val buttonScanningOffline = findViewById<Button>(R.id.buttonScanningOffline)
         buttonScanningOffline.setOnClickListener {
-            val intent = Intent(this, HomeScanningActivity::class.java)
+            val intent = Intent(this, UserAppsHome::class.java)
             startActivity(intent)
         }
     }

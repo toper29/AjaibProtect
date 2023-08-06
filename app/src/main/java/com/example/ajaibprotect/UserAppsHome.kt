@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +43,12 @@ class UserAppsHome : AppCompatActivity() {
     private fun bukaInfoActivityApk(packageName: String) {
         val intent = Intent(this, InfoActivityApk::class.java)
         intent.putExtra("PACKAGE_NAME", packageName)
+        startActivity(intent)
+    }
+
+    // Fungsi untuk menghandle klik tombol back
+    fun onBackButtonClick(view: View) {
+        val intent = Intent(this, HomeScanningActivity::class.java)
         startActivity(intent)
     }
 

@@ -41,8 +41,8 @@
         android:onClick="openInfoActivity"
         android:scaleType="fitCenter"
         android:src="@drawable/info"
-        android:tint="@android:color/white"
-        tools:ignore="OnClick" />
+        tools:ignore="OnClick"
+        app:tint="@android:color/white" />
 
     <ImageButton
         android:id="@+id/imagescanning"

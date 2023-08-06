@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".HomeScanningActivity"
-    tools:ignore="ExtraText">
-
+    tools:context=".UserAppsHome">
 
     <View
         android:id="@+id/colorBlock"
@@ -27,48 +24,47 @@
         android:textColor="#FFFFFF"
         android:textSize="25sp" />
 
-
-    <ImageButton
-        android:id="@+id/imageinfo"
-        android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="-239dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="205dp"
-        android:layout_marginBottom="16dp"
-        android:layout_toEndOf="@id/colorBlock"
-        android:background="@android:color/transparent"
-        android:contentDescription="TODO"
-        android:onClick="openInfoActivity"
-        android:scaleType="fitCenter"
-        android:src="@drawable/info"
-        android:tint="@android:color/white"
-        tools:ignore="OnClick" />
-
-
     <Button
         android:id="@+id/buttonUserApps"
         android:layout_width="209dp"
         android:layout_height="55dp"
+        android:layout_below="@id/colorBlock"
+        android:layout_alignParentStart="true"
         android:background="#327987"
         android:text="User Apps"
-        android:textColor="#FFFFFF"
-        android:layout_below="@id/colorBlock"
-    android:layout_alignParentStart="true" />
-
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/buttonSystemApps"
         android:layout_width="205dp"
         android:layout_height="55dp"
+        android:layout_below="@id/colorBlock"
+        android:layout_alignParentEnd="true"
         android:background="#327987"
         android:text="System Apps"
-        android:textColor="#FFFFFF"
-        android:layout_below="@id/colorBlock"
-        android:layout_alignParentEnd="true" />
+        android:textColor="#FFFFFF" />
 
+    <!-- Tambahkan headerLayout di sini -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/buttonSystemApps">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Semua Aplikasi"
+            android:textSize="18sp"
+            android:textColor="#000000" />
 
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewApps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/headerLayout"
+        android:layout_marginTop="25dp" />
 </RelativeLayout>
-

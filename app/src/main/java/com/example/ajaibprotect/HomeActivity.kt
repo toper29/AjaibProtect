@@ -3,7 +3,7 @@ package com.example.ajaibprotect
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 
 class HomeActivity : AppCompatActivity() {
@@ -30,13 +30,11 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-    /// Fungsi untuk membuka InfoActivity
+    // Fungsi untuk membuka InfoActivity
     fun openInfoActivity(view: View) {
         val intent = Intent(this, InfoActivity::class.java)
         startActivity(intent)
     }
-
 
     // Fungsi untuk membuka ScanningHomeActivity
     fun openScanningHomeActivity(view: View) {

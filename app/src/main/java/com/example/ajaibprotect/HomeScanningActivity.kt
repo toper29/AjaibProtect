@@ -3,7 +3,7 @@ package com.example.ajaibprotect
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 
 class HomeScanningActivity : AppCompatActivity() {
@@ -30,9 +30,25 @@ class HomeScanningActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    /// Fungsi untuk membuka InfoActivity
+    // Fungsi untuk membuka InfoActivity
     fun openInfoActivity(view: View) {
         val intent = Intent(this, InfoActivity::class.java)
         startActivity(intent)
+    }
+
+    // Fungsi untuk membuka UserAppsHome ketika tombol "User Apps" diklik
+    fun openUserAppsHome(view: View) {
+        val intent = Intent(this, UserAppsHome::class.java)
+        startActivity(intent)
+    }
+
+    fun openIncidentActivity(view: View) {
+        val intent = Intent(this, IncidentActivity::class.java)
+        startActivity(intent)
+    }
+
+    // Override metode onBackPressed untuk menutup aplikasi saat tombol Back ditekan
+    override fun onBackPressed() {
+        finishAffinity() // Menutup semua activity yang terkait dengan aplikasi
     }
 }

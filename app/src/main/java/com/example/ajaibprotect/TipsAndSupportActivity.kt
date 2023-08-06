@@ -1,10 +1,10 @@
 package com.example.ajaibprotect
 
 import android.os.Bundle
-import android.support.v4.widget.TextViewCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.widget.TextViewCompat
 
 
 class TipsAndSupportActivity : AppCompatActivity() {

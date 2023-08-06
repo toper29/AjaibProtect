@@ -33,7 +33,7 @@
         android:layout_width="209dp"
         android:layout_height="55dp"
         android:background="#327987"
-        android:text="Aplikasi dari WA"
+        android:text="Aplikasi WA"
         android:textColor="#FFFFFF"
         android:layout_below="@id/colorBlock"
     android:layout_alignParentStart="true" />

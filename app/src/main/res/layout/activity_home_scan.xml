@@ -33,9 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="-239dp"
+        android:layout_marginStart="-51dp"
         android:layout_marginTop="35dp"
-        android:layout_marginEnd="205dp"
+        android:layout_marginEnd="17dp"
         android:layout_marginBottom="16dp"
         android:layout_toEndOf="@id/colorBlock"
         android:background="@android:color/transparent"
@@ -55,7 +55,8 @@
         android:text="User Apps"
         android:textColor="#FFFFFF"
         android:layout_below="@id/colorBlock"
-    android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="openUserAppsHome" />
 
 
     <Button
@@ -92,6 +93,7 @@
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/incident"
+        android:onClick="openIncidentActivity"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton

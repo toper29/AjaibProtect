@@ -1,14 +1,19 @@
 package com.example.ajaibprotect
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
 
+@Suppress("DEPRECATION")
 class InfoActivityApk : AppCompatActivity() {
 
     private lateinit var packageName: String
@@ -47,13 +52,17 @@ class InfoActivityApk : AppCompatActivity() {
 
         // Menampilkan nama pengembang jika tersedia
         val developerName = appInfo.metaData?.getString("developerName") ?: "Tidak diketahui"
-        textViewDeveloper.text = "$developerName"
+        textViewDeveloper.text = developerName
 
         // Menampilkan daftar izin aplikasi
         val permissions = getPermissionsList(packageName)
         val permissionListView = findViewById<ListView>(R.id.permissionListView)
         val permissionListAdapter = PermissionListAdapter(this, permissions)
         permissionListView.adapter = permissionListAdapter
+
+        // Set click listener for the uninstall button
+        val uninstallButton = findViewById<View>(R.id.uninstallButton)
+        uninstallButton.setOnClickListener { uninstallApp() }
     }
 
     private fun getPermissionsList(packageName: String): List<String> {
@@ -72,4 +81,18 @@ class InfoActivityApk : AppCompatActivity() {
         }
         return permissionsList
     }
+
+    // Function to uninstall the app
+    private fun uninstallApp() {
+        try {
+            val uninstallIntent = Intent(Intent.ACTION_UNINSTALL_PACKAGE)
+            uninstallIntent.data = Uri.parse("package:$packageName")
+            startActivity(uninstallIntent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Failed to uninstall the app", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 }

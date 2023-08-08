@@ -2,8 +2,8 @@ package com.example.ajaibprotect
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class Homeincidentwa : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,7 +12,7 @@ class Homeincidentwa : AppCompatActivity() {
 
         val buttonViewAplikasiWA = findViewById<Button>(R.id.buttonviewaplikasiwa)
         buttonViewAplikasiWA.setOnClickListener {
-            val intent = Intent(this, Homeincidentwaapk::class.java)
+            val intent = Intent(this, ReceivedApksActivity::class.java)
             startActivity(intent)
         }
     }

@@ -55,9 +55,7 @@
         android:layout_alignParentEnd="true"
         android:background="#327987"
         android:text="System Apps"
-        android:textColor="#FFFFFF"
-        android:onClick="openSystemAppsPage" />
-
+        android:textColor="#FFFFFF" />
 
     <!-- Tambahkan headerLayout di sini -->
     <LinearLayout

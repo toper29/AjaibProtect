@@ -23,6 +23,12 @@ class ScanningHomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val buttonScanningOnline: Button = findViewById(R.id.buttonScanningOnline)
+        buttonScanningOnline.setOnClickListener {
+            val intent = Intent(this, ScanningOnlineActivity::class.java)
+            startActivity(intent)
+        }
+
         val backCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Lakukan sesuatu di sini sebelum kembali

@@ -51,7 +51,8 @@
         android:background="#286181"
         android:text="Scanning Online"
         android:textColor="#FFFFFF"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:context=".ScanningOnlineActivity"/>
 
     <Button
         android:id="@+id/buttonScanningOffline"

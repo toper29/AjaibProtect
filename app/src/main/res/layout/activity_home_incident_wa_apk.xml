@@ -4,16 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".HomeScanningActivity"
+    tools:context=".ReceivedApksActivity"
     tools:ignore="ExtraText">
 
-
+    <!-- Top Color Block -->
     <View
         android:id="@+id/colorBlock"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="#286181" />
 
+    <!-- Title Text -->
     <TextView
         android:id="@+id/textAjaibProtect"
         android:layout_width="wrap_content"
@@ -26,7 +27,7 @@
         android:textColor="#FFFFFF"
         android:textSize="25sp" />
 
-
+    <!-- Button to Aplikasi WA -->
     <Button
         android:id="@+id/buttonaplikasidariwa"
         android:layout_width="209dp"
@@ -35,9 +36,9 @@
         android:text="Aplikasi WA"
         android:textColor="#FFFFFF"
         android:layout_below="@id/colorBlock"
-    android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" />
 
-
+    <!-- Button to File dari WA -->
     <Button
         android:id="@+id/buttonfilewa"
         android:layout_width="205dp"
@@ -48,21 +49,22 @@
         android:layout_below="@id/colorBlock"
         android:layout_alignParentEnd="true" />
 
+    <!-- Header Layout (You can add views here) -->
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/buttonaplikasidariwa">
-
+        <!-- Add your header views here -->
     </LinearLayout>
 
+    <!-- ListView to display APKs -->
     <ListView
         android:id="@+id/apksListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/headerLayout"
         android:layout_centerInParent="true" />
 
-
 </RelativeLayout>
-

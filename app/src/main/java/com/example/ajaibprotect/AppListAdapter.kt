@@ -1,7 +1,7 @@
 package com.example.ajaibprotect.adapters
 
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.ajaibprotect.R
 
-class AppListAdapter(private val appsList: List<ApplicationInfo>, private val packageManager: PackageManager) :
+class AppListAdapter(private val appsList: List<ResolveInfo>, private val packageManager: PackageManager) :
     BaseAdapter() {
 
     override fun getCount(): Int {

@@ -67,7 +67,9 @@
         android:text="System Apps"
         android:textColor="#FFFFFF"
         android:layout_below="@id/colorBlock"
-    android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="openSystemAppsPage" />
+
 
     <ImageButton
         android:id="@+id/imagescanning"

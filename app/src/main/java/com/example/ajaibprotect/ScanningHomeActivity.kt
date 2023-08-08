@@ -2,9 +2,10 @@ package com.example.ajaibprotect
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 
 class ScanningHomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +14,7 @@ class ScanningHomeActivity : AppCompatActivity() {
 
         val imageButtonBack = findViewById<ImageButton>(R.id.imageButtonback)
         imageButtonBack.setOnClickListener {
-            onBackPressed() // Memanggil metode onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         val buttonScanningOffline = findViewById<Button>(R.id.buttonScanningOffline)
@@ -21,6 +22,13 @@ class ScanningHomeActivity : AppCompatActivity() {
             val intent = Intent(this, UserAppsHome::class.java)
             startActivity(intent)
         }
-    }
 
+        val backCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Lakukan sesuatu di sini sebelum kembali
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, backCallback)
+    }
 }

@@ -1,12 +1,14 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.ajaibprotect
 
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ListView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ajaibprotect.adapters.AppListAdapter
 
@@ -14,7 +16,13 @@ class UserAppsHome : AppCompatActivity() {
 
     private lateinit var listViewApps: ListView
     private lateinit var appListAdapter: AppListAdapter
-    private lateinit var appsList: List<ApplicationInfo>
+    private lateinit var appsList: List<ResolveInfo>
+
+    private val appInfoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // Handle the result if needed
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +39,11 @@ class UserAppsHome : AppCompatActivity() {
         listViewApps.adapter = appListAdapter
 
         // Menambahkan click listener untuk setiap item di ListView
-        listViewApps.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
-            val appInfo = parent.getItemAtPosition(position) as ApplicationInfo
+        listViewApps.setOnItemClickListener { _, _, position, _ ->
+            val appInfo = appsList[position]
             // Lakukan tindakan yang diinginkan ketika item diklik, misalnya membuka InfoActivityApk
             // dengan mengirimkan informasi aplikasi terkait
-            bukaInfoActivityApk(appInfo.packageName)
+            bukaInfoActivityApk(appInfo.activityInfo.packageName)
         }
     }
 
@@ -43,7 +51,7 @@ class UserAppsHome : AppCompatActivity() {
     private fun bukaInfoActivityApk(packageName: String) {
         val intent = Intent(this, InfoActivityApk::class.java)
         intent.putExtra("PACKAGE_NAME", packageName)
-        startActivity(intent)
+        appInfoLauncher.launch(intent)
     }
 
     // Fungsi untuk menghandle klik tombol back
@@ -53,10 +61,11 @@ class UserAppsHome : AppCompatActivity() {
     }
 
     // Mendapatkan daftar aplikasi yang diunduh oleh pengguna
-    private fun getListAplikasiPengguna(): List<ApplicationInfo> {
+    private fun getListAplikasiPengguna(): List<ResolveInfo> {
         val packageManager: PackageManager = packageManager
-        return packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
-            .filter { it.flags and ApplicationInfo.FLAG_SYSTEM == 0 } // Hanya aplikasi pengguna, bukan sistem
+        val mainIntent = Intent(Intent.ACTION_MAIN)
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+        return packageManager.queryIntentActivities(mainIntent, 0)
     }
 
     // Fungsi untuk membuka halaman sistem aplikasi

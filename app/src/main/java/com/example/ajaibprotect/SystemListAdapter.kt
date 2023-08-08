@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.ajaibprotect.R
-import com.example.ajaibprotect.R.id.appNameTextView
 
 class SystemListAdapter(context: Context, private val appList: List<ApplicationInfo>) :
     ArrayAdapter<ApplicationInfo>(context, R.layout.item_system, appList) {
@@ -18,7 +17,7 @@ class SystemListAdapter(context: Context, private val appList: List<ApplicationI
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.item_system, parent, false)
 
-        val appNameTextView = rowView.findViewById(appNameTextView) as TextView
+        val appNameTextView = rowView.findViewById(R.id.appNameTextView) as TextView
         val appIconImageView = rowView.findViewById(R.id.appIconImageView) as ImageView
 
         val appInfo = appList[position]

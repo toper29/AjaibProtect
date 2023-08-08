@@ -1,15 +1,17 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.ajaibprotect
 
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ajaibprotect.adapters.SystemListAdapter
 
-@Suppress("DEPRECATION")
 class UserSystemHome : AppCompatActivity() {
 
     private lateinit var listViewApps: ListView
@@ -17,7 +19,7 @@ class UserSystemHome : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_apps_home)
+        setContentView(R.layout.activity_user_system_apps_home)
 
         // Mendapatkan daftar sistem aplikasi bawaan
         systemAppsList = getSystemAppsList()
@@ -50,5 +52,11 @@ class UserSystemHome : AppCompatActivity() {
         val packageManager: PackageManager = packageManager
         return packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
             .filter { it.flags and ApplicationInfo.FLAG_SYSTEM != 0 } // Hanya aplikasi sistem
+    }
+
+    // Fungsi untuk membuka halaman aplikasi pengguna
+    fun openUserAppsPage(view: View) {
+        val intent = Intent(this, UserAppsHome::class.java)
+        startActivity(intent)
     }
 }

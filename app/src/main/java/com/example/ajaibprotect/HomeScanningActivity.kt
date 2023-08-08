@@ -3,8 +3,8 @@ package com.example.ajaibprotect
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 
 class HomeScanningActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,5 +50,11 @@ class HomeScanningActivity : AppCompatActivity() {
     // Override metode onBackPressed untuk menutup aplikasi saat tombol Back ditekan
     override fun onBackPressed() {
         finishAffinity() // Menutup semua activity yang terkait dengan aplikasi
+    }
+
+    // Fungsi untuk membuka halaman aplikasi sistem
+    fun openSystemAppsPage(view: View) {
+        val intent = Intent(this, UserSystemHome::class.java)
+        startActivity(intent)
     }
 }

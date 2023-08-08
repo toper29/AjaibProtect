@@ -45,7 +45,9 @@
         android:layout_alignParentStart="true"
         android:background="#327987"
         android:text="User Apps"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:onClick="openUserAppsPage" />
+
 
     <Button
         android:id="@+id/buttonSystemApps"

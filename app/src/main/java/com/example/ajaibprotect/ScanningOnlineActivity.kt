@@ -33,7 +33,7 @@ class ScanningOnlineActivity : AppCompatActivity() {
 
     private fun performOnlineScan() {
         val request = Request.Builder()
-            .url("https://www.virustotal.com/api/v3/files")
+            .url("https://www.virustotal.com/api/v3/files/{id}/analyse")
             .addHeader("x-apikey", apiKey)
             .build()
 

@@ -33,7 +33,7 @@ class InfoActivityApk : AppCompatActivity() {
         val textViewInstallerName = findViewById<TextView>(R.id.textViewInstallerName)
         val textViewSize = findViewById<TextView>(R.id.textViewSize)
         val textViewPath = findViewById<TextView>(R.id.textViewPath)
-        val textViewDeveloper = findViewById<TextView>(R.id.textViewDeveloper) // Tambahkan TextView untuk nama pengembang
+        val textViewAsalDownload = findViewById<TextView>(R.id.textViewAsalDownload) // Tambahkan TextView untuk asal download
         val appIcon = findViewById<ImageView>(R.id.appIcon)
 
         // Menampilkan informasi aplikasi
@@ -47,18 +47,24 @@ class InfoActivityApk : AppCompatActivity() {
         textViewPath.text = appInfo.sourceDir
 
         // Menampilkan logo aplikasi
-        val appLogo: Drawable = packageManager.getApplicationIcon(packageName)
+        val appLogo: Drawable = packageManager.getApplicationIcon(appInfo)
         appIcon.setImageDrawable(appLogo)
 
-        // Menampilkan nama pengembang jika tersedia
-        val developerName = appInfo.metaData?.getString("developerName") ?: "Tidak diketahui"
-        textViewDeveloper.text = developerName
+        // Mengambil dan menampilkan asal download aplikasi
+        val installerPackageName = packageManager.getInstallerPackageName(packageName)
+        val asalDownload = getInstallerName(installerPackageName)
+        textViewAsalDownload.text = asalDownload
 
         // Menampilkan daftar izin aplikasi
         val permissions = getPermissionsList(packageName)
         val permissionListView = findViewById<ListView>(R.id.permissionListView)
         val permissionListAdapter = PermissionListAdapter(this, permissions)
         permissionListView.adapter = permissionListAdapter
+
+        // Menghitung dan menampilkan skor prediksi
+        val predictionScore = calculatePredictionScore(asalDownload, permissions)
+        val textPredictionScore = findViewById<TextView>(R.id.textPredictionScore)
+        textPredictionScore.text = "$predictionScore"
 
         // Set click listener for the uninstall button
         val uninstallButton = findViewById<View>(R.id.uninstallButton)
@@ -82,7 +88,6 @@ class InfoActivityApk : AppCompatActivity() {
         return permissionsList
     }
 
-    // Function to uninstall the app
     private fun uninstallApp() {
         try {
             val uninstallIntent = Intent(Intent.ACTION_UNINSTALL_PACKAGE)
@@ -93,6 +98,90 @@ class InfoActivityApk : AppCompatActivity() {
             Toast.makeText(this, "Failed to uninstall the app", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun getInstallerName(packageName: String?): String {
+        return when (packageName) {
+            "com.android.vending" -> "Google Play Store"
+            "com.amazon.venezia" -> "Amazon Appstore"
+            // Tambahkan asal download lain sesuai kebutuhan
+            else -> "Tidak diketahui"
+        }
+    }
+
+    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>): Float {
+        // Skor asal unduh
+        var asalDownloadScore = 0.0f
+
+        when (asalDownload) {
+            "Google Play Store" -> asalDownloadScore = 0.1f
+        }
+
+        // Skor berdasarkan izin yang diminta
+        var izinScore = 0.0f
+
+        if (permissions.contains("android.permission.READ_EXTERNAL_STORAGE")) {
+            izinScore += 0.1f
+        }
+
+        if (permissions.contains("android.permission.WRITE_EXTERNAL_STORAGE")) {
+            izinScore += 0.1f
+        }
+
+        if (permissions.contains("android.permission.READ_PHONE_STATE")) {
+            izinScore += 0.1f
+        }
+
+        if (permissions.contains("android.permission.ACCESS_COARSE_LOCATION")) {
+            izinScore += 0.1f
+        }
+
+        if (permissions.contains("android.permission.ACCESS_FINE_LOCATION")) {
+            izinScore += 0.2f
+        }
+
+        if (permissions.contains("android.permission.CAMERA")) {
+            izinScore += 0.2f
+        }
+
+        if (permissions.contains("android.permission.READ_CONTACTS")) {
+            izinScore += 0.3f
+        }
+
+        if (permissions.contains("android.permission.CALL_PHONE")) {
+            izinScore += 0.3f
+        }
+
+        if (permissions.contains("android.permission.RECORD")) {
+            izinScore += 0.2f
+        }
+
+        if (permissions.contains("android.permission.GET_ACCOUNTS")) {
+            izinScore += 0.2f
+        }
+
+        if (permissions.contains("android.permission.RECORD_AUDIO")) {
+            izinScore += 0.1f
+        }
+
+        if (permissions.contains("android.permission.READ_PHONE_NUMBERS")) {
+            izinScore += 0.1f
+        }
+
+        if (permissions.contains("android.permission.READ_CALL_LOG")) {
+            izinScore += 0.5f
+        }
+
+        if (permissions.contains("android.permission.WRITE_CALL_LOG")) {
+            izinScore += 0.5f
+        }
+
+        // Menghitung total skor berdasarkan asal unduh dan izin
+        val predictionScore = asalDownloadScore + izinScore
+        return predictionScore
+    }
+
+
+
 
 
 }

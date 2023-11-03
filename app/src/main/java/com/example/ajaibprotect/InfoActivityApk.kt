@@ -109,13 +109,13 @@ class InfoActivityApk : AppCompatActivity() {
     }
 
     private fun calculatePredictionScore(asalDownload: String, permissions: List<String>): Float {
-        // Skor asal unduh
+        // Logika perhitungan skor prediksi di sini
         var asalDownloadScore = 0.0f
 
         when (asalDownload) {
             "Google Play Store" -> asalDownloadScore = 0.1f
         }
-
+        // Bisa menambahkan berbagai aturan atau parameter yang Anda anggap perlu
         // Skor berdasarkan izin yang diminta
         var izinScore = 0.0f
 

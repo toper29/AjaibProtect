@@ -1,8 +1,7 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.ajaibprotect
 
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
@@ -11,6 +10,8 @@ import android.widget.ListView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ajaibprotect.adapters.AppListAdapter
+import android.util.Log
+
 
 class UserAppsHome : AppCompatActivity() {
 
@@ -63,10 +64,18 @@ class UserAppsHome : AppCompatActivity() {
     // Mendapatkan daftar aplikasi yang diunduh oleh pengguna
     private fun getListAplikasiPengguna(): List<ResolveInfo> {
         val packageManager: PackageManager = packageManager
-        val mainIntent = Intent(Intent.ACTION_MAIN)
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-        return packageManager.queryIntentActivities(mainIntent, 0)
+        val mainIntent = Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER)
+        val appsList = packageManager.queryIntentActivities(mainIntent, PackageManager.GET_RESOLVED_FILTER)
+            .filter { resolveInfo -> resolveInfo.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0 }
+
+        // Logging untuk memeriksa hasil
+        for (info in appsList) {
+            Log.d("Aplikasi", "Nama Aplikasi: ${info.activityInfo.packageName}")
+        }
+
+        return appsList
     }
+
 
     // Fungsi untuk membuka halaman sistem aplikasi
     fun openSystemAppsPage(view: View) {

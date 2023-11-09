@@ -1,11 +1,11 @@
 package com.example.ajaibprotect
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -18,22 +18,28 @@ class MyReceivedApksActivity : AppCompatActivity() {
         const val REQUEST_PERMISSION = 101
     }
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_received_apks)
 
+        // Inisialisasi ListView
         val apksListView: ListView = findViewById(R.id.apksListView)
 
+        // Memeriksa izin penyimpanan
         if (checkStoragePermission()) {
+            // Jika izin disetujui, mendapatkan daftar file APK yang diterima
             val apkFiles = getReceivedApkFiles()
+
+            // Membuat adapter dan mengaturnya ke dalam ListView
             val adapter = AppWaListAdapter(this, apkFiles)
             apksListView.adapter = adapter
         } else {
+            // Jika izin belum diberikan, meminta izin penyimpanan
             requestStoragePermission()
         }
     }
 
+    // Memeriksa apakah izin penyimpanan sudah diberikan atau belum
     private fun checkStoragePermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
@@ -41,6 +47,7 @@ class MyReceivedApksActivity : AppCompatActivity() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    // Meminta izin penyimpanan jika belum diberikan
     private fun requestStoragePermission() {
         ActivityCompat.requestPermissions(
             this,
@@ -49,25 +56,21 @@ class MyReceivedApksActivity : AppCompatActivity() {
         )
     }
 
+    // Mendapatkan daftar file APK yang diterima dari direktori unduhan
     private fun getReceivedApkFiles(): List<File> {
         val receivedApks = mutableListOf<File>()
 
-        val intent: Intent? = intent
-        if (intent?.action == Intent.ACTION_VIEW) {
-            val uri: Uri? = intent.data
-            if (uri != null) {
-                val filePath = uri.path
-                if (filePath != null) {
-                    val directory = File(filePath).parentFile
-                    if (directory != null && directory.isDirectory) {
-                        receivedApks.addAll(directory.listFiles { file ->
-                            file.isFile && file.extension.equals("apk", ignoreCase = true)
-                        })
-                    }
-                }
-            }
+        // Menggunakan direktori unduhan sebagai contoh
+        val downloadDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+
+        // Memeriksa apakah direktori unduhan ada
+        if (downloadDirectory.isDirectory) {
+            receivedApks.addAll(downloadDirectory.listFiles { file ->
+                file.isFile && file.extension.equals("apk", ignoreCase = true)
+            })
         }
 
+        // Mengembalikan daftar file APK yang ditemukan
         return receivedApks
     }
 }

@@ -29,11 +29,12 @@ class InfoActivityApk : AppCompatActivity() {
         val packageManager: PackageManager = packageManager
         val appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
 
+        // Inisialisasi view
         val textViewAppName = findViewById<TextView>(R.id.textViewAppName)
         val textViewInstallerName = findViewById<TextView>(R.id.textViewInstallerName)
         val textViewSize = findViewById<TextView>(R.id.textViewSize)
         val textViewPath = findViewById<TextView>(R.id.textViewPath)
-        val textViewAsalDownload = findViewById<TextView>(R.id.textViewAsalDownload) // Tambahkan TextView untuk asal download
+        val textViewAsalDownload = findViewById<TextView>(R.id.textViewAsalDownload)
         val appIcon = findViewById<ImageView>(R.id.appIcon)
 
         // Menampilkan informasi aplikasi
@@ -71,6 +72,7 @@ class InfoActivityApk : AppCompatActivity() {
         uninstallButton.setOnClickListener { uninstallApp() }
     }
 
+    // Mendapatkan daftar izin aplikasi
     private fun getPermissionsList(packageName: String): List<String> {
         val permissionsList = mutableListOf<String>()
         try {
@@ -88,6 +90,7 @@ class InfoActivityApk : AppCompatActivity() {
         return permissionsList
     }
 
+    // Menghapus aplikasi
     private fun uninstallApp() {
         try {
             val uninstallIntent = Intent(Intent.ACTION_UNINSTALL_PACKAGE)
@@ -99,6 +102,7 @@ class InfoActivityApk : AppCompatActivity() {
         }
     }
 
+    // Mendapatkan nama asal download
     private fun getInstallerName(packageName: String?): String {
         return when (packageName) {
             "com.android.vending" -> "Google Play Store"
@@ -108,6 +112,7 @@ class InfoActivityApk : AppCompatActivity() {
         }
     }
 
+    // Menghitung skor prediksi
     private fun calculatePredictionScore(asalDownload: String, permissions: List<String>): Float {
         // Logika perhitungan skor prediksi di sini
         var asalDownloadScore = 0.0f
@@ -115,73 +120,16 @@ class InfoActivityApk : AppCompatActivity() {
         when (asalDownload) {
             "Google Play Store" -> asalDownloadScore = 0.1f
         }
-        // Bisa menambahkan berbagai aturan atau parameter yang Anda anggap perlu
+
         // Skor berdasarkan izin yang diminta
         var izinScore = 0.0f
-
         if (permissions.contains("android.permission.READ_EXTERNAL_STORAGE")) {
             izinScore += 0.1f
         }
-
-        if (permissions.contains("android.permission.WRITE_EXTERNAL_STORAGE")) {
-            izinScore += 0.1f
-        }
-
-        if (permissions.contains("android.permission.READ_PHONE_STATE")) {
-            izinScore += 0.1f
-        }
-
-        if (permissions.contains("android.permission.ACCESS_COARSE_LOCATION")) {
-            izinScore += 0.1f
-        }
-
-        if (permissions.contains("android.permission.ACCESS_FINE_LOCATION")) {
-            izinScore += 0.2f
-        }
-
-        if (permissions.contains("android.permission.CAMERA")) {
-            izinScore += 0.2f
-        }
-
-        if (permissions.contains("android.permission.READ_CONTACTS")) {
-            izinScore += 0.3f
-        }
-
-        if (permissions.contains("android.permission.CALL_PHONE")) {
-            izinScore += 0.3f
-        }
-
-        if (permissions.contains("android.permission.RECORD")) {
-            izinScore += 0.2f
-        }
-
-        if (permissions.contains("android.permission.GET_ACCOUNTS")) {
-            izinScore += 0.2f
-        }
-
-        if (permissions.contains("android.permission.RECORD_AUDIO")) {
-            izinScore += 0.1f
-        }
-
-        if (permissions.contains("android.permission.READ_PHONE_NUMBERS")) {
-            izinScore += 0.1f
-        }
-
-        if (permissions.contains("android.permission.READ_CALL_LOG")) {
-            izinScore += 0.5f
-        }
-
-        if (permissions.contains("android.permission.WRITE_CALL_LOG")) {
-            izinScore += 0.5f
-        }
+        // Tambahkan aturan skor izin lainnya sesuai kebutuhan
 
         // Menghitung total skor berdasarkan asal unduh dan izin
         val predictionScore = asalDownloadScore + izinScore
         return predictionScore
     }
-
-
-
-
-
 }

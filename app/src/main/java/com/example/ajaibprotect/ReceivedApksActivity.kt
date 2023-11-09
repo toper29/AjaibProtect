@@ -21,17 +21,24 @@ class ReceivedApksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_incident_wa_apk)
 
+        // Inisialisasi ListView
         val apksListView: ListView = findViewById(R.id.apksListView)
 
+        // Memeriksa izin penyimpanan
         if (checkStoragePermission()) {
+            // Jika izin disetujui, mendapatkan daftar file APK yang diterima
             val apkFiles = getReceivedApkFiles()
+
+            // Membuat adapter dan mengaturnya ke dalam ListView
             val adapter = AppWaListAdapter(this, apkFiles)
             apksListView.adapter = adapter
         } else {
+            // Jika izin belum diberikan, meminta izin penyimpanan
             requestStoragePermission()
         }
     }
 
+    // Memeriksa apakah izin penyimpanan sudah diberikan atau belum
     private fun checkStoragePermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
@@ -39,6 +46,7 @@ class ReceivedApksActivity : AppCompatActivity() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    // Meminta izin penyimpanan jika belum diberikan
     private fun requestStoragePermission() {
         ActivityCompat.requestPermissions(
             this,
@@ -47,17 +55,31 @@ class ReceivedApksActivity : AppCompatActivity() {
         )
     }
 
+    // Mendapatkan daftar file APK yang diterima dari intent
     private fun getReceivedApkFiles(): List<File> {
         val receivedApks = mutableListOf<File>()
 
+        // Mendapatkan intent dari aktivitas sebelumnya
         val intent: Intent? = intent
+
+        // Memeriksa apakah intent memiliki aksi ACTION_VIEW
         if (intent?.action == Intent.ACTION_VIEW) {
+            // Mendapatkan URI dari intent
             val uri: Uri? = intent.data
+
+            // Memeriksa apakah URI tidak null
             if (uri != null) {
+                // Mendapatkan path dari URI
                 val filePath = uri.path
+
+                // Memeriksa apakah path tidak null
                 if (filePath != null) {
+                    // Mendapatkan direktori induk dari file APK
                     val directory = File(filePath).parentFile
+
+                    // Memeriksa apakah direktori tidak null dan merupakan direktori
                     if (directory != null && directory.isDirectory) {
+                        // Menambahkan semua file APK ke dalam daftar receivedApks
                         receivedApks.addAll(directory.listFiles { file ->
                             file.isFile && file.extension.equals("apk", ignoreCase = true)
                         })
@@ -66,6 +88,7 @@ class ReceivedApksActivity : AppCompatActivity() {
             }
         }
 
+        // Mengembalikan daftar file APK yang diterima
         return receivedApks
     }
 }

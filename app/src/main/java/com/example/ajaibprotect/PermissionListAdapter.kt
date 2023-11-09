@@ -1,7 +1,6 @@
 package com.example.ajaibprotect
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -67,6 +67,11 @@ class InfoActivityApk : AppCompatActivity() {
         val textPredictionScore = findViewById<TextView>(R.id.textPredictionScore)
         textPredictionScore.text = "$predictionScore"
 
+        // Menampilkan hasil scanning
+        val scanningResult = getScanningResult(predictionScore)
+        val textHasilScanning = findViewById<TextView>(R.id.textHasilScanning)
+        textHasilScanning.text = "$scanningResult"
+
         // Set click listener for the uninstall button
         val uninstallButton = findViewById<View>(R.id.uninstallButton)
         uninstallButton.setOnClickListener { uninstallApp() }
@@ -77,11 +82,12 @@ class InfoActivityApk : AppCompatActivity() {
         val permissionsList = mutableListOf<String>()
         try {
             val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
-            val permissions = packageInfo.requestedPermissions
-            if (permissions != null) {
-                for (permission in permissions) {
-                    val permissionInfo = packageManager.getPermissionInfo(permission, 0)
-                    permissionsList.add(permissionInfo.loadLabel(packageManager).toString())
+
+            // Periksa apakah ada izin yang diminta oleh aplikasi
+            if (packageInfo.requestedPermissions != null) {
+                for (permission in packageInfo.requestedPermissions) {
+                    // Tambahkan izin ke daftar
+                    permissionsList.add(permission)
                 }
             }
         } catch (e: Exception) {
@@ -89,6 +95,7 @@ class InfoActivityApk : AppCompatActivity() {
         }
         return permissionsList
     }
+
 
     // Menghapus aplikasi
     private fun uninstallApp() {
@@ -119,17 +126,62 @@ class InfoActivityApk : AppCompatActivity() {
 
         when (asalDownload) {
             "Google Play Store" -> asalDownloadScore = 0.1f
+            else -> asalDownloadScore = 0.5f
         }
 
         // Skor berdasarkan izin yang diminta
         var izinScore = 0.0f
-        if (permissions.contains("android.permission.READ_EXTERNAL_STORAGE")) {
-            izinScore += 0.1f
+        for (permission in permissions) {
+            when (permission) {
+                // Izin Sistem
+                "android.permission.REBOOT" -> izinScore += 0.4f
+                "android.permission.SHUTDOWN" -> izinScore += 0.5f
+                // Izin Proteksi Privasi
+                "android.permission.CAMERA" -> izinScore += 0.5f
+                "android.permission.READ_CONTACTS" -> izinScore += 0.4f
+                "android.permission.WRITE_CONTACTS",
+                "android.permission.READ_CALENDAR" -> izinScore += 0.2f
+                "android.permission.WRITE_CALENDAR",
+                "android.permission.READ_CALL_LOG" -> izinScore += 0.2f
+                "android.permission.WRITE_CALL_LOG",
+                // Izin Koneksi Jaringan
+                "android.permission.INTERNET" -> izinScore += 0.1f
+                "android.permission.ACCESS_NETWORK_STATE"  -> izinScore += 0.2f
+                // Izin Penyimpanan
+                "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.4f
+                "android.permission.WRITE_EXTERNAL_STORAGE",
+                // Izin Lokasi
+                "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.4f
+                "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.5f
+                // Izin Pemrosesan Pesan
+                "android.permission.SEND_SMS" -> izinScore += 0.2f
+                "android.permission.RECEIVE_SMS" -> izinScore += 0.2f
+                "android.permission.READ_SMS" -> izinScore += 0.5f
+                // Izin Panggilan Telepon
+                "android.permission.CALL_PHONE" -> izinScore += 0.2f
+                "android.permission.READ_PHONE_STATE" -> izinScore += 0.2f
+                //Izin Sistem
+                "android.permission.WAKE_LOCK"  -> izinScore += 0.5f // Mengizinkan aplikasi untuk menjaga perangkat tetap aktif saat layar mati.
+                // Izin Media
+                "android.permission.RECORD_AUDIO" -> izinScore += 0.5f //   Mengizinkan aplikasi untuk merekam audio.
+                // Izin Pengelolaan File
+                "android.permission.MANAGE_EXTERNAL_STORAGE"-> izinScore += 0.4f  //Memerlukan izin khusus untuk mengelola penyimpanan eksternal
+            }
         }
-        // Tambahkan aturan skor izin lainnya sesuai kebutuhan
 
         // Menghitung total skor berdasarkan asal unduh dan izin
         val predictionScore = asalDownloadScore + izinScore
         return predictionScore
     }
+
+    private fun getScanningResult(predictionScore: Float): String {
+        return when {
+            predictionScore >= 6.1f -> "Malware"
+            predictionScore >= 4.1f -> "Warning"
+            else -> "Normal"
+        }
+    }
+
+
+
 }

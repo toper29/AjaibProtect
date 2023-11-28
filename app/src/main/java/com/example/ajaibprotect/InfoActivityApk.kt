@@ -77,11 +77,12 @@ class InfoActivityApk : AppCompatActivity() {
         val permissionsList = mutableListOf<String>()
         try {
             val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
-            val permissions = packageInfo.requestedPermissions
-            if (permissions != null) {
-                for (permission in permissions) {
-                    val permissionInfo = packageManager.getPermissionInfo(permission, 0)
-                    permissionsList.add(permissionInfo.loadLabel(packageManager).toString())
+
+            // Periksa apakah ada izin yang diminta oleh aplikasi
+            if (packageInfo.requestedPermissions != null) {
+                for (permission in packageInfo.requestedPermissions) {
+                    // Tambahkan izin ke daftar
+                    permissionsList.add(permission)
                 }
             }
         } catch (e: Exception) {
@@ -89,6 +90,7 @@ class InfoActivityApk : AppCompatActivity() {
         }
         return permissionsList
     }
+
 
     // Menghapus aplikasi
     private fun uninstallApp() {

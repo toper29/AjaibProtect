@@ -21,14 +21,14 @@
         <ImageButton
             android:id="@+id/imageButtonback"
             android:layout_width="50dp"
-            android:layout_height="37dp"
+            android:layout_height="45dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="6dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="30dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            app:srcCompat="?attr/homeAsUpIndicator"
+            app:srcCompat="@drawable/backbutton"
             app:tint="@android:color/white" />
 
         <TextView

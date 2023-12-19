@@ -23,6 +23,8 @@ class HomeScanningActivity : AppCompatActivity() {
         val storageInfo = "$usedSpace GB Terpakai dari $totalSpace GB"
         val textViewStorage = findViewById<TextView>(R.id.textViewStorage)
         textViewStorage.text = storageInfo
+
+
     }
 
     // Mendapatkan kapasitas total penyimpanan internal
@@ -41,6 +43,11 @@ class HomeScanningActivity : AppCompatActivity() {
         val blockSize: Long = stat.blockSizeLong
         val availableBlocks: Long = stat.availableBlocksLong
         return availableBlocks * blockSize / (1024 * 1024 * 1024) // GB
+    }
+
+    fun openScanningHomeActivity(view: View) {
+        val intent = Intent(this, ScanningHomeActivity::class.java)
+        startActivity(intent)
     }
 
 

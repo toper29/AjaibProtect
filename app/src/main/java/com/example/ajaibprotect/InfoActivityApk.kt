@@ -6,12 +6,15 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.text.HtmlCompat
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageButton
 import java.io.File
+
 
 @Suppress("DEPRECATION")
 class InfoActivityApk : AppCompatActivity() {
@@ -68,13 +71,21 @@ class InfoActivityApk : AppCompatActivity() {
         textPredictionScore.text = "$predictionScore"
 
         // Menampilkan hasil scanning
-        val scanningResult = getScanningResult(predictionScore)
+        val scanningResult = getScanningResultStyled(predictionScore)
         val textHasilScanning = findViewById<TextView>(R.id.textHasilScanning)
-        textHasilScanning.text = "$scanningResult"
+        textHasilScanning.text = scanningResult
+
 
         // Set click listener for the uninstall button
         val uninstallButton = findViewById<View>(R.id.uninstallButton)
         uninstallButton.setOnClickListener { uninstallApp() }
+
+        // Menambahkan onClickListener untuk tombol kembali
+        val backButton = findViewById<ImageButton>(R.id.imageButtonback)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
+
     }
 
     // Mendapatkan daftar izin aplikasi
@@ -148,7 +159,7 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.INTERNET" -> izinScore += 0.1f
                 "android.permission.ACCESS_NETWORK_STATE"  -> izinScore += 0.2f
                 // Izin Penyimpanan
-                "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.4f
+                "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.2f
                 "android.permission.WRITE_EXTERNAL_STORAGE",
                 // Izin Lokasi
                 "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.4f
@@ -156,7 +167,7 @@ class InfoActivityApk : AppCompatActivity() {
                 // Izin Pemrosesan Pesan
                 "android.permission.SEND_SMS" -> izinScore += 0.2f
                 "android.permission.RECEIVE_SMS" -> izinScore += 0.2f
-                "android.permission.READ_SMS" -> izinScore += 0.5f
+                "android.permission.READ_SMS" -> izinScore += 0.4f
                 // Izin Panggilan Telepon
                 "android.permission.CALL_PHONE" -> izinScore += 0.2f
                 "android.permission.READ_PHONE_STATE" -> izinScore += 0.2f
@@ -174,13 +185,14 @@ class InfoActivityApk : AppCompatActivity() {
         return predictionScore
     }
 
-    private fun getScanningResult(predictionScore: Float): String {
+    private fun getScanningResultStyled(predictionScore: Float): CharSequence {
         return when {
-            predictionScore >= 6.1f -> "Malware"
-            predictionScore >= 4.1f -> "Warning"
-            else -> "Normal"
+            predictionScore >= 6.0f -> HtmlCompat.fromHtml("<font color='#FF1400'><b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            predictionScore >= 4.1f -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            else -> HtmlCompat.fromHtml("<font color='#00B438'> Normal</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
     }
+
 
 
 

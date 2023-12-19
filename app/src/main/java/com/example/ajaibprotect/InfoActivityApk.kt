@@ -124,11 +124,15 @@ class InfoActivityApk : AppCompatActivity() {
     private fun getInstallerName(packageName: String?): String {
         return when (packageName) {
             "com.android.vending" -> "Google Play Store"
-            "com.amazon.venezia" -> "Amazon Appstore"
+            "com.whatsapp" -> "WhatsApp"
+            "org.telegram.messenger" -> "Telegram"
+            "com.android.chrome" -> "Google Chrome"
+            "com.android.browser" -> "Browser"
             // Tambahkan asal download lain sesuai kebutuhan
             else -> "Tidak diketahui"
         }
     }
+
 
     // Menghitung skor prediksi
     private fun calculatePredictionScore(asalDownload: String, permissions: List<String>): Float {
@@ -137,6 +141,10 @@ class InfoActivityApk : AppCompatActivity() {
 
         when (asalDownload) {
             "Google Play Store" -> asalDownloadScore = 0.1f
+            "WhatsApp" -> asalDownloadScore = 2.5f
+            "Telegram" -> asalDownloadScore = 2.5f
+            "Google Chrome" -> asalDownloadScore = 2.5f
+            "Browser" -> asalDownloadScore = 2.5f
             else -> asalDownloadScore = 0.5f
         }
 
@@ -188,7 +196,7 @@ class InfoActivityApk : AppCompatActivity() {
     private fun getScanningResultStyled(predictionScore: Float): CharSequence {
         return when {
             predictionScore >= 6.0f -> HtmlCompat.fromHtml("<font color='#FF1400'><b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
-            predictionScore >= 4.1f -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            predictionScore >= 4.5f -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             else -> HtmlCompat.fromHtml("<font color='#00B438'> Normal</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
     }

@@ -59,4 +59,8 @@ class UserSystemHome : AppCompatActivity() {
         val intent = Intent(this, UserAppsHome::class.java)
         startActivity(intent)
     }
+    fun onBackButtonClick(view: View) {
+        onBackPressed()
+    }
+
 }

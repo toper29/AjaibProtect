@@ -1,5 +1,7 @@
 package com.example.ajaibprotect
 
+   //activity_info_apk
+
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
@@ -14,6 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageButton
 import java.io.File
+import android.app.ActivityManager
+import android.app.usage.UsageStatsManager
+import android.content.Context
+
+
+
 
 
 @Suppress("DEPRECATION")
@@ -75,6 +83,15 @@ class InfoActivityApk : AppCompatActivity() {
         val textHasilScanning = findViewById<TextView>(R.id.textHasilScanning)
         textHasilScanning.text = scanningResult
 
+        //melihat status aplikasi
+        val textAplikasiStatus = findViewById<TextView>(R.id.textAplikasiStatus)
+        val isAppRunning = isAppRunning(packageName)
+        if (isAppRunning) {
+            textAplikasiStatus.text = "Aplikasi saat ini: Sedang Berjalan"
+        } else {
+            textAplikasiStatus.text = "Aplikasi saat ini: Tidak Berjalan"
+        }
+
 
         // Set click listener for the uninstall button
         val uninstallButton = findViewById<View>(R.id.uninstallButton)
@@ -106,6 +123,20 @@ class InfoActivityApk : AppCompatActivity() {
         }
         return permissionsList
     }
+
+    //melihat status aplikasi
+    private fun isAppRunning(packageName: String): Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val processes = activityManager.runningAppProcesses
+        for (processInfo in processes) {
+            if (processInfo.processName == packageName) {
+                return true
+            }
+        }
+        return false
+    }
+
+
 
 
     // Menghapus aplikasi

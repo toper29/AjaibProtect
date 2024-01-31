@@ -87,9 +87,9 @@ class InfoActivityApk : AppCompatActivity() {
         val textAplikasiStatus = findViewById<TextView>(R.id.textAplikasiStatus)
         val isAppRunning = isAppRunning(packageName)
         if (isAppRunning) {
-            textAplikasiStatus.text = "Aplikasi saat ini: Sedang Berjalan"
+            textAplikasiStatus.text = "Sedang Berjalan"
         } else {
-            textAplikasiStatus.text = "Aplikasi saat ini: Tidak Berjalan"
+            textAplikasiStatus.text = "Tidak Berjalan"
         }
 
 

@@ -1,17 +1,21 @@
 package com.example.ajaibprotect
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.ListView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ajaibprotect.adapters.AppListAdapter
 import android.util.Log
-
+import android.app.NotificationManager
 
 class UserAppsHome : AppCompatActivity() {
 
@@ -76,10 +80,68 @@ class UserAppsHome : AppCompatActivity() {
         return appsList
     }
 
-
     // Fungsi untuk membuka halaman sistem aplikasi
     fun openSystemAppsPage(view: View) {
         val intent = Intent(this, UserSystemHome::class.java)
         startActivity(intent)
+    }
+
+    // Fungsi untuk menampilkan dialog konfirmasi reset preferensi aplikasi
+    fun showResetConfirmationDialog(view: View) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Reset Preferensi Aplikasi")
+        builder.setMessage(
+            "Ini akan mereset semua preferensi untuk:\n" +
+                    "- Aplikasi nonaktif\n" +
+                    "- Pembatasan notifikasi untuk aplikasi\n" +
+                    "- Aplikasi default\n" +
+                    "- Pembatasan data latar belakang untuk aplikasi\n" +
+                    "- Pembatasan izin\n\n" +
+                    "Anda tidak akan kehilangan data aplikasi yang ada."
+        )
+        builder.setPositiveButton("Reset") { _, _ ->
+            resetAppPreferences()
+            Toast.makeText(this, "Preferensi aplikasi telah direset", Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("Batal") { _, _ ->
+            // Tidak melakukan apa-apa jika dibatalkan
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun resetAppPreferences() {
+        // Hapus cache
+        cacheDir.deleteRecursively()
+
+        // Hapus file-file lain yang terkait dengan preferensi aplikasi
+        filesDir.deleteRecursively()
+
+        // Reset pengaturan
+        val sharedPref = getSharedPreferences("PREF_NAME", Context.MODE_PRIVATE)
+        sharedPref.edit().clear().apply()
+
+        // Reset izin
+        val packageManager: PackageManager = packageManager
+        val appsList = getListAplikasiPengguna()
+        for (resolveInfo in appsList) {
+            val packageName = resolveInfo.activityInfo.packageName
+            packageManager.setApplicationEnabledSetting(
+                packageName,
+                PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
+                PackageManager.DONT_KILL_APP
+            )
+        }
+
+        // Reset preferensi notifikasi
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+        notificationManager?.cancelAll()
+
+        // Reset pengaturan default
+        val settingsIntent = Intent(Settings.ACTION_SETTINGS)
+        startActivity(settingsIntent)
+
+        // Tampilkan pesan bahwa preferensi aplikasi telah direset
+        Toast.makeText(this, "Preferensi aplikasi telah direset", Toast.LENGTH_SHORT).show()
     }
 }

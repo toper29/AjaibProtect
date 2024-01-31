@@ -20,10 +20,6 @@ import android.app.ActivityManager
 import android.app.usage.UsageStatsManager
 import android.content.Context
 
-
-
-
-
 @Suppress("DEPRECATION")
 class InfoActivityApk : AppCompatActivity() {
 
@@ -54,9 +50,16 @@ class InfoActivityApk : AppCompatActivity() {
 
         val file = File(appInfo.sourceDir)
         val sizeInKB = file.length() / 1024
-        textViewSize.text = "$sizeInKB KB"
+        val sizeInMB = sizeInKB / 1024
+        val sizeText = if (sizeInMB > 0) {
+            "$sizeInMB MB | $sizeInKB KB"
+        } else {
+            "$sizeInKB KB"
+        }
+        textViewSize.text = sizeText
 
         textViewPath.text = appInfo.sourceDir
+
 
         // Menampilkan logo aplikasi
         val appLogo: Drawable = packageManager.getApplicationIcon(appInfo)

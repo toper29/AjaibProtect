@@ -15,19 +15,22 @@
         android:background="#286181" />
 
     <!-- Title Text -->
+
+    <!-- Button to Aplikasi WA -->
     <TextView
         android:id="@+id/textAjaibProtect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginStart="131dp"
+        android:layout_marginTop="33dp"
         android:text="Ajaib Protect"
         android:textColor="#FFFFFF"
         android:textSize="25sp" />
 
-    <!-- Button to Aplikasi WA -->
+
+
     <Button
         android:id="@+id/buttonaplikasidariwa"
         android:layout_width="209dp"
@@ -48,6 +51,7 @@
         android:textColor="#FFFFFF"
         android:layout_below="@id/colorBlock"
         android:layout_alignParentEnd="true" />
+
 
     <!-- Header Layout (You can add views here) -->
     <LinearLayout

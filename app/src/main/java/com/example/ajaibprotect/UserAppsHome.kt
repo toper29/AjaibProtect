@@ -92,12 +92,11 @@ class UserAppsHome : AppCompatActivity() {
         builder.setTitle("Reset Preferensi Aplikasi")
         builder.setMessage(
             "Ini akan mereset semua preferensi untuk:\n" +
-                    "- Aplikasi nonaktif\n" +
-                    "- Pembatasan notifikasi untuk aplikasi\n" +
-                    "- Aplikasi default\n" +
-                    "- Pembatasan data latar belakang untuk aplikasi\n" +
-                    "- Pembatasan izin\n\n" +
-                    "Anda tidak akan kehilangan data aplikasi yang ada."
+                    "- Cache aplikasi\n" +
+                    "- Pengaturan aplikasi\n" +
+                    "- Izin aplikasi\n" +
+                    "- Preferensi notifikasi\n\n" +
+                    "Anda akan kehilangan data aplikasi yang ada."
         )
         builder.setPositiveButton("Reset") { _, _ ->
             resetAppPreferences()
@@ -113,9 +112,6 @@ class UserAppsHome : AppCompatActivity() {
     private fun resetAppPreferences() {
         // Hapus cache
         cacheDir.deleteRecursively()
-
-        // Hapus file-file lain yang terkait dengan preferensi aplikasi
-        filesDir.deleteRecursively()
 
         // Reset pengaturan
         val sharedPref = getSharedPreferences("PREF_NAME", Context.MODE_PRIVATE)
@@ -137,9 +133,6 @@ class UserAppsHome : AppCompatActivity() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
         notificationManager?.cancelAll()
 
-        // Reset pengaturan default
-        val settingsIntent = Intent(Settings.ACTION_SETTINGS)
-        startActivity(settingsIntent)
 
         // Tampilkan pesan bahwa preferensi aplikasi telah direset
         Toast.makeText(this, "Preferensi aplikasi telah direset", Toast.LENGTH_SHORT).show()

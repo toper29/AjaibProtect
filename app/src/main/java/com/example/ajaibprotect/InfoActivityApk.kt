@@ -1,6 +1,5 @@
 package com.example.ajaibprotect
 
-   //activity_info_apk
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageButton
 import java.io.File
 import android.app.ActivityManager
-import android.app.usage.UsageStatsManager
 import android.content.Context
 
 @Suppress("DEPRECATION")
@@ -162,10 +160,15 @@ class InfoActivityApk : AppCompatActivity() {
             "org.telegram.messenger" -> "Telegram"
             "com.android.chrome" -> "Google Chrome"
             "com.android.browser" -> "Browser"
-            // Tambahkan asal download lain sesuai kebutuhan
+            "com.amazon.venezia" -> "Amazon Appstore"
+            "com.sec.android.app.samsungapps" -> "Samsung Galaxy Store"
+            "com.miui.supermarket" -> "Xiaomi App Store"
+            "com.aptoide.app" -> "Aptoide"
+            "com.huawei.appmarket" -> "Huawei AppGallery"
             else -> "Tidak diketahui"
         }
     }
+
 
 
     // Menghitung skor prediksi
@@ -175,11 +178,16 @@ class InfoActivityApk : AppCompatActivity() {
 
         when (asalDownload) {
             "Google Play Store" -> asalDownloadScore = 0.1f
-            "WhatsApp" -> asalDownloadScore = 2.5f
-            "Telegram" -> asalDownloadScore = 2.5f
-            "Google Chrome" -> asalDownloadScore = 2.5f
-            "Browser" -> asalDownloadScore = 2.5f
-            else -> asalDownloadScore = 0.5f
+            "WhatsApp" -> asalDownloadScore = 0.5f
+            "Telegram" -> asalDownloadScore = 0.5f
+            "Google Chrome" -> asalDownloadScore = 0.3f
+            "Browser" -> asalDownloadScore = 0.3f
+            "Amazon Appstore" -> asalDownloadScore = 0.4f
+            "Samsung Galaxy Store" -> asalDownloadScore = 0.4f
+            "Xiaomi App Store" -> asalDownloadScore = 0.4f
+            "Aptoide" -> asalDownloadScore = 0.6f
+            "Huawei AppGallery" -> asalDownloadScore = 0.4f
+            else -> asalDownloadScore = 0.7f // Sumber unduhan tidak resmi atau berpotensi mengandung malware
         }
 
         // Skor berdasarkan izin yang diminta

@@ -1,22 +1,20 @@
 package com.example.ajaibprotect
 
-
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.BatteryManager
 import android.os.Bundle
+import android.os.Debug
 import android.view.View
-import androidx.core.text.HtmlCompat
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.ImageButton
+import androidx.core.text.HtmlCompat
+import android.widget.*
+
 import java.io.File
-import android.app.ActivityManager
-import android.content.Context
 
 @Suppress("DEPRECATION")
 class InfoActivityApk : AppCompatActivity() {
@@ -58,7 +56,6 @@ class InfoActivityApk : AppCompatActivity() {
 
         textViewPath.text = appInfo.sourceDir
 
-
         // Menampilkan logo aplikasi
         val appLogo: Drawable = packageManager.getApplicationIcon(appInfo)
         appIcon.setImageDrawable(appLogo)
@@ -75,7 +72,7 @@ class InfoActivityApk : AppCompatActivity() {
         permissionListView.adapter = permissionListAdapter
 
         // Menghitung dan menampilkan skor prediksi
-        val predictionScore = calculatePredictionScore(asalDownload, permissions)
+        val predictionScore = calculatePredictionScore(asalDownload, permissions, packageName)
         val textPredictionScore = findViewById<TextView>(R.id.textPredictionScore)
         textPredictionScore.text = "$predictionScore"
 
@@ -92,7 +89,6 @@ class InfoActivityApk : AppCompatActivity() {
         } else {
             textAplikasiStatus.text = "Tidak Berjalan"
         }
-
 
         // Set click listener for the uninstall button
         val uninstallButton = findViewById<View>(R.id.uninstallButton)
@@ -137,9 +133,6 @@ class InfoActivityApk : AppCompatActivity() {
         return false
     }
 
-
-
-
     // Menghapus aplikasi
     private fun uninstallApp() {
         try {
@@ -169,10 +162,8 @@ class InfoActivityApk : AppCompatActivity() {
         }
     }
 
-
-
     // Menghitung skor prediksi
-    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>): Float {
+    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String): Float {
         // Logika perhitungan skor prediksi di sini
         var asalDownloadScore = 0.0f
 
@@ -205,13 +196,13 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.WRITE_CALENDAR",
                 "android.permission.READ_CALL_LOG" -> izinScore += 0.2f
                 "android.permission.WRITE_CALL_LOG",
-                // Izin Koneksi Jaringan
+                    // Izin Koneksi Jaringan
                 "android.permission.INTERNET" -> izinScore += 0.1f
                 "android.permission.ACCESS_NETWORK_STATE"  -> izinScore += 0.2f
                 // Izin Penyimpanan
                 "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.2f
                 "android.permission.WRITE_EXTERNAL_STORAGE",
-                // Izin Lokasi
+                    // Izin Lokasi
                 "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.4f
                 "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.5f
                 // Izin Pemrosesan Pesan
@@ -230,10 +221,49 @@ class InfoActivityApk : AppCompatActivity() {
             }
         }
 
-        // Menghitung total skor berdasarkan asal unduh dan izin
-        val predictionScore = asalDownloadScore + izinScore
+        // Menghitung total skor berdasarkan asal unduh, izin, dan pemantauan sumber daya
+        val predictionScore = asalDownloadScore + izinScore + resourceMonitoringScore(packageName)
         return predictionScore
     }
+
+    // Skor berdasarkan pemantauan sumber daya
+    private fun resourceMonitoringScore(packageName: String): Float {
+        // Mengakses layanan ActivityManager untuk mendapatkan informasi tentang proses yang berjalan
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val processes = activityManager.runningAppProcesses
+
+        var cpuUsage = 0L
+        var memoryUsage = 0L
+
+        // Memeriksa setiap proses yang berjalan
+        for (processInfo in processes) {
+            // Jika nama paket aplikasi dari proses sesuai dengan yang dicari
+            if (processInfo.processName == packageName) {
+                // Mendapatkan informasi memori dari proses menggunakan Debug.MemoryInfo
+                val pInfo = Debug.MemoryInfo()
+                Debug.getMemoryInfo(pInfo)
+                // Mengambil penggunaan CPU dan memori total dalam KB
+                cpuUsage = pInfo.getTotalPss().toLong()
+                memoryUsage = pInfo.getTotalPss().toLong()
+                break
+            }
+        }
+
+        // Menghitung skor sumber daya berdasarkan penggunaan CPU dan memori
+        var resourceScore = 0.0f
+        // Menyesuaikan ambang batas dan logika penilaian berdasarkan kebutuhan
+        // Jika penggunaan CPU lebih dari 500 KB, tambahkan 0.3 ke skor
+        if (cpuUsage > 500) {
+            resourceScore += 0.3f
+        }
+        // Jika penggunaan memori lebih dari 500 MB (dalam KB), tambahkan 0.3 ke skor
+        if (memoryUsage > 500 * 1024) { // 500 MB dalam KB
+            resourceScore += 0.3f
+        }
+
+        return resourceScore
+    }
+
 
     private fun getScanningResultStyled(predictionScore: Float): CharSequence {
         return when {
@@ -243,7 +273,5 @@ class InfoActivityApk : AppCompatActivity() {
         }
     }
 
-
-
-
 }
+

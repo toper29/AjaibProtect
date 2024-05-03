@@ -267,8 +267,8 @@ class InfoActivityApk : AppCompatActivity() {
 
     private fun getScanningResultStyled(predictionScore: Float): CharSequence {
         return when {
-            predictionScore >= 6.0f -> HtmlCompat.fromHtml("<font color='#FF1400'><b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
-            predictionScore >= 4.5f -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            predictionScore >= 5.6f -> HtmlCompat.fromHtml("<font color='#FF1400'><b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            predictionScore >= 5.0f -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             else -> HtmlCompat.fromHtml("<font color='#00B438'> Normal</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
     }

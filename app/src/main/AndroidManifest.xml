@@ -13,8 +13,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.PACKAGE_ADDED" />
     <uses-permission android:name="android.permission.PACKAGE_REMOVED" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECEIVE_INSTALLER"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
 
 
@@ -38,7 +38,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AppInstallReceiver">
+        <receiver android:name=".AppInstallReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />

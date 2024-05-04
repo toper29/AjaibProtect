@@ -1,4 +1,3 @@
-// Untuk notifikasi ada unduhan atau uninstall aplikasi
 package com.example.ajaibprotect
 
 import android.app.NotificationChannel
@@ -8,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
@@ -20,34 +18,36 @@ class AppInstallReceiver : BroadcastReceiver() {
                 val packageName = intent.data?.encodedSchemeSpecificPart
                 Log.d("AppInstallReceiver", "Package added: $packageName")
                 createNotificationChannel(context)
-                showInstallNotification(context)
+                showInstallNotification(context, packageName ?: "")
             }
             Intent.ACTION_PACKAGE_REMOVED -> {
                 val packageName = intent.data?.encodedSchemeSpecificPart
                 Log.d("AppInstallReceiver", "Package removed: $packageName")
                 createNotificationChannel(context)
-                showUninstallNotification(context)
+                showUninstallNotification(context, packageName ?: "")
             }
         }
     }
 
-    private fun showInstallNotification(context: Context) {
+    private fun showInstallNotification(context: Context, packageName: String) {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("Instalasi Berhasil")
-            .setContentText("Instalasi aplikasi baru telah berhasil. Apakah Anda ingin memeriksa aplikasi yang baru diinstal?")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentText("Aplikasi baru telah diinstal: $packageName")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true) // Memungkinkan notifikasi untuk otomatis hilang ketika diklik
         with(NotificationManagerCompat.from(context)) {
             notify(NOTIFICATION_ID, builder.build())
         }
     }
 
-    private fun showUninstallNotification(context: Context) {
+    private fun showUninstallNotification(context: Context, packageName: String) {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("Uninstall Berhasil")
-            .setContentText("Uninstall aplikasi telah berhasil. Mohon periksa kembali apakah aplikasi tersebut masih ada dan hapus folder aplikasi yang baru dihapus dari perangkat Anda.")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentText("Aplikasi telah dihapus: $packageName")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true) // Memungkinkan notifikasi untuk otomatis hilang ketika diklik
         with(NotificationManagerCompat.from(context)) {
             notify(NOTIFICATION_ID, builder.build())
         }
@@ -57,7 +57,7 @@ class AppInstallReceiver : BroadcastReceiver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Install Uninstall Notifications"
             val descriptionText = "Notifications for successful install and uninstall actions"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
@@ -72,4 +72,3 @@ class AppInstallReceiver : BroadcastReceiver() {
         private const val NOTIFICATION_ID = 1
     }
 }
-

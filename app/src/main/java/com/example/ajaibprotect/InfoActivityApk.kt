@@ -169,16 +169,16 @@ class InfoActivityApk : AppCompatActivity() {
 
         when (asalDownload) {
             "Google Play Store" -> asalDownloadScore = 0.1f
-            "WhatsApp" -> asalDownloadScore = 0.5f
-            "Telegram" -> asalDownloadScore = 0.5f
-            "Google Chrome" -> asalDownloadScore = 0.3f
-            "Browser" -> asalDownloadScore = 0.3f
+            "WhatsApp" -> asalDownloadScore = 0.7f
+            "Telegram" -> asalDownloadScore = 0.7f
+            "Google Chrome" -> asalDownloadScore = 0.6f
+            "Browser" -> asalDownloadScore = 0.6f
             "Amazon Appstore" -> asalDownloadScore = 0.4f
             "Samsung Galaxy Store" -> asalDownloadScore = 0.4f
             "Xiaomi App Store" -> asalDownloadScore = 0.4f
             "Aptoide" -> asalDownloadScore = 0.6f
             "Huawei AppGallery" -> asalDownloadScore = 0.4f
-            else -> asalDownloadScore = 0.7f // Sumber unduhan tidak resmi atau berpotensi mengandung malware
+            else -> asalDownloadScore = 1.0f // Sumber unduhan tidak resmi atau berpotensi mengandung malware
         }
 
         // Skor berdasarkan izin yang diminta

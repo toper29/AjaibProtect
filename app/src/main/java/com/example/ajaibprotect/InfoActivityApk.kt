@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.TrafficStats
 import android.net.Uri
-import android.os.BatteryManager
 import android.os.Bundle
 import android.os.Debug
 import android.view.View
@@ -72,7 +72,8 @@ class InfoActivityApk : AppCompatActivity() {
         permissionListView.adapter = permissionListAdapter
 
         // Menghitung dan menampilkan skor prediksi
-        val predictionScore = calculatePredictionScore(asalDownload, permissions, packageName)
+        val dataUsageInLastMonthFloat = getDataUsageInLastMonth(packageName)
+        val predictionScore = calculatePredictionScore(asalDownload, permissions, packageName, dataUsageInLastMonthFloat)
         val textPredictionScore = findViewById<TextView>(R.id.textPredictionScore)
         textPredictionScore.text = "$predictionScore"
 
@@ -100,6 +101,26 @@ class InfoActivityApk : AppCompatActivity() {
             onBackPressed()
         }
 
+    }
+
+    // Mendapatkan penggunaan data aplikasi dalam 1 bulan terakhir
+    private fun getDataUsageInLastMonth(packageName: String): Float {
+        val uid = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).uid
+        val foregroundDataUsage = TrafficStats.getUidRxBytes(uid).toFloat() / (1024 * 1024) // MB
+        val backgroundDataUsage = TrafficStats.getUidTxBytes(uid).toFloat() / (1024 * 1024) // MB
+
+        // Jika penggunaan data aplikasi di latar belakang lebih dari 500 MB selama 1 bulan terakhir, tambahkan 3 pada skor
+        var score = 0.0f
+        if (backgroundDataUsage > 500) {
+            score += 0.3f
+        }
+
+        // Jika penggunaan data aplikasi di latar belakang lebih besar dari penggunaan di latar depan, tambahkan 0.5 pada skor
+        if (backgroundDataUsage > foregroundDataUsage) {
+            score += 0.5f
+        }
+
+        return score
     }
 
     // Mendapatkan daftar izin aplikasi
@@ -158,12 +179,12 @@ class InfoActivityApk : AppCompatActivity() {
             "com.miui.supermarket" -> "Xiaomi App Store"
             "com.aptoide.app" -> "Aptoide"
             "com.huawei.appmarket" -> "Huawei AppGallery"
-            else -> "Tidak diketahui"
+            else -> "Unknown"
         }
     }
 
     // Menghitung skor prediksi
-    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String): Float {
+    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String, dataUsageInLastMonth: Float): Float {
         // Logika perhitungan skor prediksi di sini
         var asalDownloadScore = 0.0f
 
@@ -198,7 +219,7 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.WRITE_CALL_LOG",
                     // Izin Koneksi Jaringan
                 "android.permission.INTERNET" -> izinScore += 0.1f
-                "android.permission.ACCESS_NETWORK_STATE"  -> izinScore += 0.2f
+                "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.2f
                 // Izin Penyimpanan
                 "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.2f
                 "android.permission.WRITE_EXTERNAL_STORAGE",
@@ -213,11 +234,11 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.CALL_PHONE" -> izinScore += 0.2f
                 "android.permission.READ_PHONE_STATE" -> izinScore += 0.2f
                 //Izin Sistem
-                "android.permission.WAKE_LOCK"  -> izinScore += 0.5f // Mengizinkan aplikasi untuk menjaga perangkat tetap aktif saat layar mati.
+                "android.permission.WAKE_LOCK" -> izinScore += 0.5f // Mengizinkan aplikasi untuk menjaga perangkat tetap aktif saat layar mati.
                 // Izin Media
                 "android.permission.RECORD_AUDIO" -> izinScore += 0.5f //   Mengizinkan aplikasi untuk merekam audio.
                 // Izin Pengelolaan File
-                "android.permission.MANAGE_EXTERNAL_STORAGE"-> izinScore += 0.4f  //Memerlukan izin khusus untuk mengelola penyimpanan eksternal
+                "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.4f  //Memerlukan izin khusus untuk mengelola penyimpanan eksternal
             }
         }
 

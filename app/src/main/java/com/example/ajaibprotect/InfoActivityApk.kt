@@ -10,10 +10,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Debug
 import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
-import android.widget.*
-
 import java.io.File
 
 @Suppress("DEPRECATION")
@@ -72,8 +71,9 @@ class InfoActivityApk : AppCompatActivity() {
         permissionListView.adapter = permissionListAdapter
 
         // Menghitung dan menampilkan skor prediksi
-        val dataUsageInLastMonthFloat = getDataUsageInLastMonth(packageName)
-        val predictionScore = calculatePredictionScore(asalDownload, permissions, packageName, dataUsageInLastMonthFloat)
+        val score = getDataUsageInLastMonth(packageName)
+        val malwareScore = detectMalware(packageName)
+        val predictionScore = calculatePredictionScore(asalDownload, permissions, packageName, score, malwareScore)
         val textPredictionScore = findViewById<TextView>(R.id.textPredictionScore)
         textPredictionScore.text = "$predictionScore"
 
@@ -103,14 +103,19 @@ class InfoActivityApk : AppCompatActivity() {
 
     }
 
-    // Mendapatkan penggunaan data aplikasi dalam 1 bulan terakhir
+    // Menghitung penggunaan data aplikasi dalam satu bulan terakhir berdasarkan package name aplikasi
     private fun getDataUsageInLastMonth(packageName: String): Float {
+        // Mendapatkan UID aplikasi berdasarkan package name
         val uid = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).uid
+
+        // Menghitung penggunaan data aplikasi dalam satuan MB
         val foregroundDataUsage = TrafficStats.getUidRxBytes(uid).toFloat() / (1024 * 1024) // MB
         val backgroundDataUsage = TrafficStats.getUidTxBytes(uid).toFloat() / (1024 * 1024) // MB
 
-        // Jika penggunaan data aplikasi di latar belakang lebih dari 500 MB selama 1 bulan terakhir, tambahkan 3 pada skor
+        // Inisialisasi skor
         var score = 0.0f
+
+        // Jika penggunaan data aplikasi di latar belakang lebih dari 500 MB selama 1 bulan terakhir, tambahkan 0.3 pada skor
         if (backgroundDataUsage > 500) {
             score += 0.3f
         }
@@ -120,6 +125,7 @@ class InfoActivityApk : AppCompatActivity() {
             score += 0.5f
         }
 
+        // Mengembalikan skor
         return score
     }
 
@@ -184,7 +190,7 @@ class InfoActivityApk : AppCompatActivity() {
     }
 
     // Menghitung skor prediksi
-    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String, dataUsageInLastMonth: Float): Float {
+    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String, dataUsageInLastMonth: Float, malwareScore: Float): Float {
         // Logika perhitungan skor prediksi di sini
         var asalDownloadScore = 0.0f
 
@@ -210,45 +216,45 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.REBOOT" -> izinScore += 0.4f
                 "android.permission.SHUTDOWN" -> izinScore += 0.5f
                 // Izin Proteksi Privasi
-                "android.permission.CAMERA" -> izinScore += 0.5f
-                "android.permission.READ_CONTACTS" -> izinScore += 0.4f
-                "android.permission.WRITE_CONTACTS",
+                "android.permission.CAMERA" -> izinScore += 0.3f
+                "android.permission.READ_CONTACTS" -> izinScore += 0.5f
+                "android.permission.WRITE_CONTACTS"-> izinScore += 0.2f
                 "android.permission.READ_CALENDAR" -> izinScore += 0.2f
-                "android.permission.WRITE_CALENDAR",
+                "android.permission.WRITE_CALENDAR"-> izinScore += 0.2f
                 "android.permission.READ_CALL_LOG" -> izinScore += 0.2f
-                "android.permission.WRITE_CALL_LOG",
-                    // Izin Koneksi Jaringan
-                "android.permission.INTERNET" -> izinScore += 0.1f
-                "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.2f
+                "android.permission.WRITE_CALL_LOG"-> izinScore += 0.2f
+                // Izin Koneksi Jaringan
+                "android.permission.INTERNET" -> izinScore += 0.3f
+                "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.3f
                 // Izin Penyimpanan
                 "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.2f
-                "android.permission.WRITE_EXTERNAL_STORAGE",
-                    // Izin Lokasi
+                "android.permission.WRITE_EXTERNAL_STORAGE"-> izinScore += 0.2f
+                // Izin Lokasi
                 "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.4f
-                "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.5f
+                "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.3f
                 // Izin Pemrosesan Pesan
                 "android.permission.SEND_SMS" -> izinScore += 0.2f
                 "android.permission.RECEIVE_SMS" -> izinScore += 0.2f
-                "android.permission.READ_SMS" -> izinScore += 0.4f
+                "android.permission.READ_SMS" -> izinScore += 0.3f
                 // Izin Panggilan Telepon
                 "android.permission.CALL_PHONE" -> izinScore += 0.2f
                 "android.permission.READ_PHONE_STATE" -> izinScore += 0.2f
                 //Izin Sistem
-                "android.permission.WAKE_LOCK" -> izinScore += 0.5f // Mengizinkan aplikasi untuk menjaga perangkat tetap aktif saat layar mati.
+                "android.permission.WAKE_LOCK" -> izinScore += 0.4f // Mengizinkan aplikasi untuk menjaga perangkat tetap aktif saat layar mati.
                 // Izin Media
-                "android.permission.RECORD_AUDIO" -> izinScore += 0.5f //   Mengizinkan aplikasi untuk merekam audio.
+                "android.permission.RECORD_AUDIO" -> izinScore += 0.4f //   Mengizinkan aplikasi untuk merekam audio.
                 // Izin Pengelolaan File
-                "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.4f  //Memerlukan izin khusus untuk mengelola penyimpanan eksternal
+                "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.2f  //Memerlukan izin khusus untuk mengelola penyimpanan eksternal
             }
         }
 
         // Menghitung total skor berdasarkan asal unduh, izin, dan pemantauan sumber daya
-        val predictionScore = asalDownloadScore + izinScore + resourceMonitoringScore(packageName)
+        val predictionScore = asalDownloadScore + izinScore + dataUsageInLastMonth + malwareScore
         return predictionScore
     }
 
     // Skor berdasarkan pemantauan sumber daya
-    private fun resourceMonitoringScore(packageName: String): Float {
+    private fun detectMalware(packageName: String): Float {
         // Mengakses layanan ActivityManager untuk mendapatkan informasi tentang proses yang berjalan
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val processes = activityManager.runningAppProcesses
@@ -270,21 +276,20 @@ class InfoActivityApk : AppCompatActivity() {
             }
         }
 
-        // Menghitung skor sumber daya berdasarkan penggunaan CPU dan memori
-        var resourceScore = 0.0f
+        // Menghitung skor deteksi malware berdasarkan penggunaan CPU dan memori
+        var malwareScore = 0.0f
         // Menyesuaikan ambang batas dan logika penilaian berdasarkan kebutuhan
-        // Jika penggunaan CPU lebih dari 500 KB, tambahkan 0.3 ke skor
+        // Jika penggunaan CPU lebih dari 500 KB, tambahkan 0.5 ke skor
         if (cpuUsage > 500) {
-            resourceScore += 0.3f
+            malwareScore += 0.5f
         }
-        // Jika penggunaan memori lebih dari 500 MB (dalam KB), tambahkan 0.3 ke skor
+        // Jika penggunaan memori lebih dari 500 MB (dalam KB), tambahkan 0.5 ke skor
         if (memoryUsage > 500 * 1024) { // 500 MB dalam KB
-            resourceScore += 0.3f
+            malwareScore += 0.5f
         }
 
-        return resourceScore
+        return malwareScore
     }
-
 
     private fun getScanningResultStyled(predictionScore: Float): CharSequence {
         return when {
@@ -295,4 +300,3 @@ class InfoActivityApk : AppCompatActivity() {
     }
 
 }
-

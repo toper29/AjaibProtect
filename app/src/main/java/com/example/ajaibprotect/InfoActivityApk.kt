@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import java.io.File
 
+// Informasi Aplikasi saat di Scan
+
 @Suppress("DEPRECATION")
 class InfoActivityApk : AppCompatActivity() {
 
@@ -191,7 +193,7 @@ class InfoActivityApk : AppCompatActivity() {
 
     // Menghitung skor prediksi
     private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String, dataUsageInLastMonth: Float, malwareScore: Float): Float {
-        // Logika perhitungan skor prediksi di sini
+        // Perhitungan skor prediksi di sini
         var asalDownloadScore = 0.0f
 
         when (asalDownload) {
@@ -212,39 +214,54 @@ class InfoActivityApk : AppCompatActivity() {
         var izinScore = 0.0f
         for (permission in permissions) {
             when (permission) {
-                // Izin Sistem
-                "android.permission.REBOOT" -> izinScore += 0.4f
-                "android.permission.SHUTDOWN" -> izinScore += 0.5f
-                // Izin Proteksi Privasi
-                "android.permission.CAMERA" -> izinScore += 0.3f
-                "android.permission.READ_CONTACTS" -> izinScore += 0.5f
-                "android.permission.WRITE_CONTACTS"-> izinScore += 0.2f
-                "android.permission.READ_CALENDAR" -> izinScore += 0.2f
-                "android.permission.WRITE_CALENDAR"-> izinScore += 0.2f
-                "android.permission.READ_CALL_LOG" -> izinScore += 0.2f
-                "android.permission.WRITE_CALL_LOG"-> izinScore += 0.2f
-                // Izin Koneksi Jaringan
-                "android.permission.INTERNET" -> izinScore += 0.3f
-                "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.3f
-                // Izin Penyimpanan
-                "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.2f
-                "android.permission.WRITE_EXTERNAL_STORAGE"-> izinScore += 0.2f
-                // Izin Lokasi
-                "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.4f
-                "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.3f
-                // Izin Pemrosesan Pesan
-                "android.permission.SEND_SMS" -> izinScore += 0.2f
-                "android.permission.RECEIVE_SMS" -> izinScore += 0.2f
-                "android.permission.READ_SMS" -> izinScore += 0.3f
-                // Izin Panggilan Telepon
-                "android.permission.CALL_PHONE" -> izinScore += 0.2f
-                "android.permission.READ_PHONE_STATE" -> izinScore += 0.2f
-                //Izin Sistem
-                "android.permission.WAKE_LOCK" -> izinScore += 0.4f // Mengizinkan aplikasi untuk menjaga perangkat tetap aktif saat layar mati.
-                // Izin Media
-                "android.permission.RECORD_AUDIO" -> izinScore += 0.4f //   Mengizinkan aplikasi untuk merekam audio.
-                // Izin Pengelolaan File
-                "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.2f  //Memerlukan izin khusus untuk mengelola penyimpanan eksternal
+                // Izin Sistem (Berisiko tinggi jika disalahgunakan)
+                "android.permission.REBOOT" -> izinScore += 0.5f // Mengizinkan aplikasi untuk memulai ulang perangkat, sangat jarang digunakan oleh aplikasi normal.
+                "android.permission.SHUTDOWN" -> izinScore += 0.5f // Mengizinkan aplikasi untuk mematikan perangkat, sering digunakan oleh malware untuk mengganggu.
+                "android.permission.CHANGE_CONFIGURATION" -> izinScore += 0.2f // Mengubah konfigurasi sistem (misalnya orientasi layar), risiko sedang.
+                "android.permission.SYSTEM_ALERT_WINDOW" -> izinScore += 0.5f // Menampilkan jendela di atas aplikasi lain, sering digunakan malware untuk phishing.
+                "android.permission.SET_WALLPAPER" -> izinScore += 0.1f // Mengubah wallpaper, risiko rendah.
+
+                // Izin Koneksi Jaringan (Malware sering membutuhkan ini untuk berkomunikasi dengan server C2)
+                "android.permission.INTERNET" -> izinScore += 0.3f // Diperlukan untuk mengakses internet, banyak digunakan oleh semua aplikasi.
+                "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.2f // Mengecek status jaringan, risiko rendah.
+                "android.permission.ACCESS_WIFI_STATE" -> izinScore += 0.2f // Mengecek status Wi-Fi, risiko rendah.
+                "android.permission.CHANGE_NETWORK_STATE" -> izinScore += 0.3f // Mengubah status jaringan, dapat digunakan malware untuk manipulasi koneksi.
+
+                // Izin Privasi dan Data Sensitif (Berisiko tinggi jika disalahgunakan)
+                "android.permission.CAMERA" -> izinScore += 0.4f // Mengakses kamera, digunakan oleh spyware untuk merekam tanpa sepengetahuan pengguna.
+                "android.permission.RECORD_AUDIO" -> izinScore += 0.4f // Merekam audio, sering digunakan oleh malware untuk menguping percakapan.
+                "android.permission.READ_CONTACTS" -> izinScore += 0.5f // Membaca daftar kontak, digunakan oleh malware untuk pencurian data pribadi.
+                "android.permission.READ_PHONE_NUMBERS" -> izinScore += 0.4f // Membaca nomor telepon pengguna, data sensitif.
+                "android.permission.PACKAGE_USAGE_STATS" -> izinScore += 0.5f // Melihat aktivitas aplikasi, sering digunakan malware untuk memantau aktivitas pengguna.
+
+                // Izin Lokasi (Digunakan malware untuk pelacakan)
+                "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.5f // Mengakses lokasi akurat, sangat sensitif.
+                "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.3f // Mengakses lokasi perkiraan, kurang sensitif dibanding lokasi akurat.
+                "android.permission.ACCESS_BACKGROUND_LOCATION" -> izinScore += 0.5f // Mengakses lokasi di latar belakang, sering digunakan untuk pelacakan.
+
+                // Izin Penyimpanan (Risiko sedang hingga tinggi tergantung konteks)
+                "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.4f // Membaca file dari penyimpanan eksternal, dapat digunakan malware untuk mencuri data.
+                "android.permission.WRITE_EXTERNAL_STORAGE" -> izinScore += 0.3f // Menulis ke penyimpanan eksternal, dapat digunakan untuk menyimpan file berbahaya.
+                "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.5f // Mengelola semua file di penyimpanan, sering digunakan malware untuk mengakses data secara bebas.
+
+                // Izin Pesan dan Telepon (Digunakan malware untuk penipuan atau pengintaian)
+                "android.permission.SEND_SMS" -> izinScore += 0.5f // Mengirim SMS, sering digunakan oleh malware untuk scam.
+                "android.permission.RECEIVE_SMS" -> izinScore += 0.3f // Menerima SMS, dapat digunakan untuk mencuri OTP.
+                "android.permission.READ_SMS" -> izinScore += 0.4f // Membaca SMS, dapat digunakan untuk mencuri data sensitif seperti OTP.
+                "android.permission.CALL_PHONE" -> izinScore += 0.4f // Melakukan panggilan telepon, dapat digunakan untuk panggilan tidak sah.
+                "android.permission.READ_CALL_LOG" -> izinScore += 0.3f // Membaca riwayat panggilan, data moderat sensitif.
+
+                // Izin Sistem dan Latar Belakang
+                "android.permission.FOREGROUND_SERVICE" -> izinScore += 0.5f // Menjalankan layanan di latar depan, sering digunakan malware untuk terus berjalan.
+                "android.permission.WAKE_LOCK" -> izinScore += 0.4f // Menjaga perangkat tetap aktif, digunakan malware untuk tetap berjalan di latar belakang.
+
+                // Izin Biometrik dan Sensor
+                "android.permission.USE_BIOMETRIC" -> izinScore += 0.5f // Menggunakan data biometrik, sangat sensitif.
+                "android.permission.BODY_SENSORS" -> izinScore += 0.4f // Mengakses sensor tubuh, risiko sedang.
+                "android.permission.ACTIVITY_RECOGNITION" -> izinScore += 0.3f // Mengenali aktivitas fisik, risiko moderat.
+
+                // Izin Lain
+                "android.permission.REQUEST_INSTALL_PACKAGES" -> izinScore += 0.5f // Menginstal aplikasi, sering digunakan malware untuk menyebarkan dirinya.
             }
         }
 

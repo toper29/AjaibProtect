@@ -150,6 +150,7 @@ class InfoActivityApk : AppCompatActivity() {
         return permissionsList
     }
 
+
     //melihat status aplikasi
     private fun isAppRunning(packageName: String): Boolean {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -217,48 +218,56 @@ class InfoActivityApk : AppCompatActivity() {
                 // Izin Sistem (Berisiko tinggi jika disalahgunakan)
                 "android.permission.REBOOT" -> izinScore += 0.5f // Mengizinkan aplikasi untuk memulai ulang perangkat, sangat jarang digunakan oleh aplikasi normal.
                 "android.permission.SHUTDOWN" -> izinScore += 0.5f // Mengizinkan aplikasi untuk mematikan perangkat, sering digunakan oleh malware untuk mengganggu.
-                "android.permission.CHANGE_CONFIGURATION" -> izinScore += 0.2f // Mengubah konfigurasi sistem (misalnya orientasi layar), risiko sedang.
-                "android.permission.SYSTEM_ALERT_WINDOW" -> izinScore += 0.5f // Menampilkan jendela di atas aplikasi lain, sering digunakan malware untuk phishing.
-                "android.permission.SET_WALLPAPER" -> izinScore += 0.1f // Mengubah wallpaper, risiko rendah.
+                "android.permission.CHANGE_CONFIGURATION" -> izinScore += 0.3f // Mengubah konfigurasi sistem (misalnya orientasi layar), risiko sedang.
+                "android.permission.SYSTEM_ALERT_WINDOW" -> izinScore += 0.4f // Menampilkan jendela di atas aplikasi lain, sering digunakan malware untuk phishing.
+                "android.permission.SET_WALLPAPER" -> izinScore += 0.2f // Mengubah wallpaper, risiko rendah.
+
 
                 // Izin Koneksi Jaringan (Malware sering membutuhkan ini untuk berkomunikasi dengan server C2)
-                "android.permission.INTERNET" -> izinScore += 0.3f // Diperlukan untuk mengakses internet, banyak digunakan oleh semua aplikasi.
-                "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.2f // Mengecek status jaringan, risiko rendah.
-                "android.permission.ACCESS_WIFI_STATE" -> izinScore += 0.2f // Mengecek status Wi-Fi, risiko rendah.
-                "android.permission.CHANGE_NETWORK_STATE" -> izinScore += 0.3f // Mengubah status jaringan, dapat digunakan malware untuk manipulasi koneksi.
+                "android.permission.INTERNET" -> izinScore += 0.2f // Diperlukan untuk mengakses internet, banyak digunakan oleh semua aplikasi.
+                "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.1f // Mengecek status jaringan, risiko rendah.
+                "android.permission.ACCESS_WIFI_STATE" -> izinScore += 0.1f // Mengecek status Wi-Fi, risiko rendah.
+                "android.permission.CHANGE_NETWORK_STATE" -> izinScore += 0.2f // Mengubah status jaringan, dapat digunakan malware untuk manipulasi koneksi.
+
 
                 // Izin Privasi dan Data Sensitif (Berisiko tinggi jika disalahgunakan)
                 "android.permission.CAMERA" -> izinScore += 0.4f // Mengakses kamera, digunakan oleh spyware untuk merekam tanpa sepengetahuan pengguna.
                 "android.permission.RECORD_AUDIO" -> izinScore += 0.4f // Merekam audio, sering digunakan oleh malware untuk menguping percakapan.
-                "android.permission.READ_CONTACTS" -> izinScore += 0.5f // Membaca daftar kontak, digunakan oleh malware untuk pencurian data pribadi.
-                "android.permission.READ_PHONE_NUMBERS" -> izinScore += 0.4f // Membaca nomor telepon pengguna, data sensitif.
-                "android.permission.PACKAGE_USAGE_STATS" -> izinScore += 0.5f // Melihat aktivitas aplikasi, sering digunakan malware untuk memantau aktivitas pengguna.
+                "android.permission.READ_CONTACTS" -> izinScore += 0.3f // Membaca daftar kontak, digunakan oleh malware untuk pencurian data pribadi.
+                "android.permission.READ_PHONE_NUMBERS" -> izinScore += 0.3f // Membaca nomor telepon pengguna, data sensitif.
+                "android.permission.PACKAGE_USAGE_STATS" -> izinScore += 0.4f // Melihat aktivitas aplikasi, sering digunakan malware untuk memantau aktivitas pengguna.
+
 
                 // Izin Lokasi (Digunakan malware untuk pelacakan)
-                "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.5f // Mengakses lokasi akurat, sangat sensitif.
-                "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.3f // Mengakses lokasi perkiraan, kurang sensitif dibanding lokasi akurat.
-                "android.permission.ACCESS_BACKGROUND_LOCATION" -> izinScore += 0.5f // Mengakses lokasi di latar belakang, sering digunakan untuk pelacakan.
+                "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.3f // Mengakses lokasi akurat, sangat sensitif.
+                "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.2f // Mengakses lokasi perkiraan, kurang sensitif dibanding lokasi akurat.
+                "android.permission.ACCESS_BACKGROUND_LOCATION" -> izinScore += 0.4f // Mengakses lokasi di latar belakang, sering digunakan untuk pelacakan.
+
 
                 // Izin Penyimpanan (Risiko sedang hingga tinggi tergantung konteks)
-                "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.4f // Membaca file dari penyimpanan eksternal, dapat digunakan malware untuk mencuri data.
-                "android.permission.WRITE_EXTERNAL_STORAGE" -> izinScore += 0.3f // Menulis ke penyimpanan eksternal, dapat digunakan untuk menyimpan file berbahaya.
-                "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.5f // Mengelola semua file di penyimpanan, sering digunakan malware untuk mengakses data secara bebas.
+                "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.3f // Membaca file dari penyimpanan eksternal, dapat digunakan malware untuk mencuri data.
+                "android.permission.WRITE_EXTERNAL_STORAGE" -> izinScore += 0.2f // Menulis ke penyimpanan eksternal, dapat digunakan untuk menyimpan file berbahaya.
+                "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.4f // Mengelola semua file di penyimpanan, sering digunakan malware untuk mengakses data secara bebas.
+
 
                 // Izin Pesan dan Telepon (Digunakan malware untuk penipuan atau pengintaian)
                 "android.permission.SEND_SMS" -> izinScore += 0.5f // Mengirim SMS, sering digunakan oleh malware untuk scam.
                 "android.permission.RECEIVE_SMS" -> izinScore += 0.3f // Menerima SMS, dapat digunakan untuk mencuri OTP.
                 "android.permission.READ_SMS" -> izinScore += 0.4f // Membaca SMS, dapat digunakan untuk mencuri data sensitif seperti OTP.
-                "android.permission.CALL_PHONE" -> izinScore += 0.4f // Melakukan panggilan telepon, dapat digunakan untuk panggilan tidak sah.
+                "android.permission.CALL_PHONE" -> izinScore += 0.3f // Melakukan panggilan telepon, dapat digunakan untuk panggilan tidak sah.
                 "android.permission.READ_CALL_LOG" -> izinScore += 0.3f // Membaca riwayat panggilan, data moderat sensitif.
 
+
                 // Izin Sistem dan Latar Belakang
-                "android.permission.FOREGROUND_SERVICE" -> izinScore += 0.5f // Menjalankan layanan di latar depan, sering digunakan malware untuk terus berjalan.
-                "android.permission.WAKE_LOCK" -> izinScore += 0.4f // Menjaga perangkat tetap aktif, digunakan malware untuk tetap berjalan di latar belakang.
+                "android.permission.FOREGROUND_SERVICE" -> izinScore += 0.4f // Menjalankan layanan di latar depan, sering digunakan malware untuk terus berjalan.
+                "android.permission.WAKE_LOCK" -> izinScore += 0.3f // Menjaga perangkat tetap aktif, digunakan malware untuk tetap berjalan di latar belakang.
+
 
                 // Izin Biometrik dan Sensor
-                "android.permission.USE_BIOMETRIC" -> izinScore += 0.5f // Menggunakan data biometrik, sangat sensitif.
-                "android.permission.BODY_SENSORS" -> izinScore += 0.4f // Mengakses sensor tubuh, risiko sedang.
-                "android.permission.ACTIVITY_RECOGNITION" -> izinScore += 0.3f // Mengenali aktivitas fisik, risiko moderat.
+                "android.permission.USE_BIOMETRIC" -> izinScore += 0.4f // Menggunakan data biometrik, sangat sensitif.
+                "android.permission.BODY_SENSORS" -> izinScore += 0.3f // Mengakses sensor tubuh, risiko sedang.
+                "android.permission.ACTIVITY_RECOGNITION" -> izinScore += 0.2f // Mengenali aktivitas fisik, risiko moderat.
+
 
                 // Izin Lain
                 "android.permission.REQUEST_INSTALL_PACKAGES" -> izinScore += 0.5f // Menginstal aplikasi, sering digunakan malware untuk menyebarkan dirinya.

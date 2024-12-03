@@ -267,41 +267,35 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp">
+        android:padding="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <LinearLayout
+            <!-- TextView untuk menampilkan izin aplikasi -->
+            <TextView
+                android:id="@+id/permissionsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:text="Izin yang dibutuhkan akan tampil di sini."
+                android:textSize="18sp"
+                android:scrollbars="vertical"
+                android:layout_marginBottom="16dp" />
+
+            <!-- ListView untuk menampilkan izin aplikasi dengan ukuran lebih besar -->
+            <ListView
+                android:id="@+id/permissionListView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="1dp"
                 android:layout_marginTop="16dp"
-                android:padding="16dp"
-                android:background="@drawable/bordersatu">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Izin yang Dibutuhkan:"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp" />
-
-                <ListView
-                    android:id="@+id/permissionListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@android:color/darker_gray"
-                    android:dividerHeight="1dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp" />
-
-            </LinearLayout>
-
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
     </ScrollView>
 

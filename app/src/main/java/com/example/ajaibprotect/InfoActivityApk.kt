@@ -3,6 +3,7 @@ package com.example.ajaibprotect
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.TrafficStats
@@ -31,7 +32,15 @@ class InfoActivityApk : AppCompatActivity() {
 
         // Mendapatkan informasi aplikasi menggunakan package manager
         val packageManager: PackageManager = packageManager
-        val appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+        val appInfo: ApplicationInfo
+
+        try {
+            appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(this, "Aplikasi tidak ditemukan", Toast.LENGTH_SHORT).show()
+            finish() // Menutup activity jika aplikasi tidak ditemukan
+            return
+        }
 
         // Inisialisasi view
         val textViewAppName = findViewById<TextView>(R.id.textViewAppName)
@@ -41,7 +50,7 @@ class InfoActivityApk : AppCompatActivity() {
         val textViewAsalDownload = findViewById<TextView>(R.id.textViewAsalDownload)
         val appIcon = findViewById<ImageView>(R.id.appIcon)
 
-        // Menampilkan informasi aplikasi
+        // Menampilkan informasi kapasitas aplikasi
         textViewAppName.text = appInfo.loadLabel(packageManager).toString()
         textViewInstallerName.text = appInfo.packageName
 
@@ -75,25 +84,25 @@ class InfoActivityApk : AppCompatActivity() {
         // Menghitung dan menampilkan skor prediksi
         val score = getDataUsageInLastMonth(packageName)
         val malwareScore = detectMalware(packageName)
-        val predictionScore = calculatePredictionScore(asalDownload, permissions, packageName, score, malwareScore)
+        val apkMalwareScore = detectSuspiciousAppName(textViewAppName.text.toString(), packageName)
+        val sizeScore = detectAppSize(file.length()) // Menambahkan deteksi ukuran aplikasi
+        val predictionScore = calculatePredictionScore(asalDownload, permissions, packageName, score, malwareScore, sizeScore)
+        val finalPredictionScore = predictionScore + apkMalwareScore
+
         val textPredictionScore = findViewById<TextView>(R.id.textPredictionScore)
-        textPredictionScore.text = "$predictionScore"
+        textPredictionScore.text = "$finalPredictionScore"
 
         // Menampilkan hasil scanning
-        val scanningResult = getScanningResultStyled(predictionScore)
+        val scanningResult = getScanningResultStyled(finalPredictionScore)
         val textHasilScanning = findViewById<TextView>(R.id.textHasilScanning)
         textHasilScanning.text = scanningResult
 
-        //melihat status aplikasi
+        // Melihat status aplikasi
         val textAplikasiStatus = findViewById<TextView>(R.id.textAplikasiStatus)
         val isAppRunning = isAppRunning(packageName)
-        if (isAppRunning) {
-            textAplikasiStatus.text = "Sedang Berjalan"
-        } else {
-            textAplikasiStatus.text = "Tidak Berjalan"
-        }
+        textAplikasiStatus.text = if (isAppRunning) "Sedang Berjalan" else "Tidak Berjalan"
 
-        // Set click listener for the uninstall button
+        // Klik untuk tombol uninstall
         val uninstallButton = findViewById<View>(R.id.uninstallButton)
         uninstallButton.setOnClickListener { uninstallApp() }
 
@@ -102,32 +111,18 @@ class InfoActivityApk : AppCompatActivity() {
         backButton.setOnClickListener {
             onBackPressed()
         }
-
     }
 
     // Menghitung penggunaan data aplikasi dalam satu bulan terakhir berdasarkan package name aplikasi
     private fun getDataUsageInLastMonth(packageName: String): Float {
-        // Mendapatkan UID aplikasi berdasarkan package name
         val uid = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).uid
-
-        // Menghitung penggunaan data aplikasi dalam satuan MB
         val foregroundDataUsage = TrafficStats.getUidRxBytes(uid).toFloat() / (1024 * 1024) // MB
         val backgroundDataUsage = TrafficStats.getUidTxBytes(uid).toFloat() / (1024 * 1024) // MB
 
-        // Inisialisasi skor
         var score = 0.0f
+        if (backgroundDataUsage > 500) score += 0.3f
+        if (backgroundDataUsage > foregroundDataUsage) score += 0.5f
 
-        // Jika penggunaan data aplikasi di latar belakang lebih dari 500 MB selama 1 bulan terakhir, tambahkan 0.3 pada skor
-        if (backgroundDataUsage > 500) {
-            score += 0.3f
-        }
-
-        // Jika penggunaan data aplikasi di latar belakang lebih besar dari penggunaan di latar depan, tambahkan 0.5 pada skor
-        if (backgroundDataUsage > foregroundDataUsage) {
-            score += 0.5f
-        }
-
-        // Mengembalikan skor
         return score
     }
 
@@ -136,31 +131,17 @@ class InfoActivityApk : AppCompatActivity() {
         val permissionsList = mutableListOf<String>()
         try {
             val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
-
-            // Periksa apakah ada izin yang diminta oleh aplikasi
-            if (packageInfo.requestedPermissions != null) {
-                for (permission in packageInfo.requestedPermissions) {
-                    // Tambahkan izin ke daftar
-                    permissionsList.add(permission)
-                }
-            }
+            packageInfo.requestedPermissions?.let { permissionsList.addAll(it) }
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return permissionsList
     }
 
-
-    //melihat status aplikasi
+    // Melihat status aplikasi
     private fun isAppRunning(packageName: String): Boolean {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val processes = activityManager.runningAppProcesses
-        for (processInfo in processes) {
-            if (processInfo.processName == packageName) {
-                return true
-            }
-        }
-        return false
+        return activityManager.runningAppProcesses.any { it.processName == packageName }
     }
 
     // Menghapus aplikasi
@@ -193,22 +174,19 @@ class InfoActivityApk : AppCompatActivity() {
     }
 
     // Menghitung skor prediksi
-    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String, dataUsageInLastMonth: Float, malwareScore: Float): Float {
-        // Perhitungan skor prediksi di sini
-        var asalDownloadScore = 0.0f
-
-        when (asalDownload) {
-            "Google Play Store" -> asalDownloadScore = 0.1f
-            "WhatsApp" -> asalDownloadScore = 0.7f
-            "Telegram" -> asalDownloadScore = 0.7f
-            "Google Chrome" -> asalDownloadScore = 0.6f
-            "Browser" -> asalDownloadScore = 0.6f
-            "Amazon Appstore" -> asalDownloadScore = 0.4f
-            "Samsung Galaxy Store" -> asalDownloadScore = 0.4f
-            "Xiaomi App Store" -> asalDownloadScore = 0.4f
-            "Aptoide" -> asalDownloadScore = 0.6f
-            "Huawei AppGallery" -> asalDownloadScore = 0.4f
-            else -> asalDownloadScore = 1.0f // Sumber unduhan tidak resmi atau berpotensi mengandung malware
+    private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String, dataUsageInLastMonth: Float, malwareScore: Float, sizeScore: Float): Float {
+        var asalDownloadScore = when (asalDownload) {
+            "Google Play Store" -> 0.1f
+            "WhatsApp" -> 0.7f
+            "Telegram" -> 0.7f
+            "Google Chrome" -> 0.6f
+            "Browser" -> 0.6f
+            "Amazon Appstore" -> 0.4f
+            "Samsung Galaxy Store" -> 0.4f
+            "Xiaomi App Store" -> 0.4f
+            "Aptoide" -> 0.6f
+            "Huawei AppGallery" -> 0.4f
+            else -> 1.0f
         }
 
         // Skor berdasarkan izin yang diminta
@@ -222,13 +200,11 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.SYSTEM_ALERT_WINDOW" -> izinScore += 0.4f // Menampilkan jendela di atas aplikasi lain, sering digunakan malware untuk phishing.
                 "android.permission.SET_WALLPAPER" -> izinScore += 0.2f // Mengubah wallpaper, risiko rendah.
 
-
                 // Izin Koneksi Jaringan (Malware sering membutuhkan ini untuk berkomunikasi dengan server C2)
                 "android.permission.INTERNET" -> izinScore += 0.2f // Diperlukan untuk mengakses internet, banyak digunakan oleh semua aplikasi.
                 "android.permission.ACCESS_NETWORK_STATE" -> izinScore += 0.1f // Mengecek status jaringan, risiko rendah.
                 "android.permission.ACCESS_WIFI_STATE" -> izinScore += 0.1f // Mengecek status Wi-Fi, risiko rendah.
                 "android.permission.CHANGE_NETWORK_STATE" -> izinScore += 0.2f // Mengubah status jaringan, dapat digunakan malware untuk manipulasi koneksi.
-
 
                 // Izin Privasi dan Data Sensitif (Berisiko tinggi jika disalahgunakan)
                 "android.permission.CAMERA" -> izinScore += 0.4f // Mengakses kamera, digunakan oleh spyware untuk merekam tanpa sepengetahuan pengguna.
@@ -237,18 +213,15 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.READ_PHONE_NUMBERS" -> izinScore += 0.3f // Membaca nomor telepon pengguna, data sensitif.
                 "android.permission.PACKAGE_USAGE_STATS" -> izinScore += 0.4f // Melihat aktivitas aplikasi, sering digunakan malware untuk memantau aktivitas pengguna.
 
-
                 // Izin Lokasi (Digunakan malware untuk pelacakan)
                 "android.permission.ACCESS_FINE_LOCATION" -> izinScore += 0.3f // Mengakses lokasi akurat, sangat sensitif.
                 "android.permission.ACCESS_COARSE_LOCATION" -> izinScore += 0.2f // Mengakses lokasi perkiraan, kurang sensitif dibanding lokasi akurat.
                 "android.permission.ACCESS_BACKGROUND_LOCATION" -> izinScore += 0.4f // Mengakses lokasi di latar belakang, sering digunakan untuk pelacakan.
 
-
                 // Izin Penyimpanan (Risiko sedang hingga tinggi tergantung konteks)
                 "android.permission.READ_EXTERNAL_STORAGE" -> izinScore += 0.3f // Membaca file dari penyimpanan eksternal, dapat digunakan malware untuk mencuri data.
                 "android.permission.WRITE_EXTERNAL_STORAGE" -> izinScore += 0.2f // Menulis ke penyimpanan eksternal, dapat digunakan untuk menyimpan file berbahaya.
                 "android.permission.MANAGE_EXTERNAL_STORAGE" -> izinScore += 0.4f // Mengelola semua file di penyimpanan, sering digunakan malware untuk mengakses data secara bebas.
-
 
                 // Izin Pesan dan Telepon (Digunakan malware untuk penipuan atau pengintaian)
                 "android.permission.SEND_SMS" -> izinScore += 0.5f // Mengirim SMS, sering digunakan oleh malware untuk scam.
@@ -257,72 +230,199 @@ class InfoActivityApk : AppCompatActivity() {
                 "android.permission.CALL_PHONE" -> izinScore += 0.3f // Melakukan panggilan telepon, dapat digunakan untuk panggilan tidak sah.
                 "android.permission.READ_CALL_LOG" -> izinScore += 0.3f // Membaca riwayat panggilan, data moderat sensitif.
 
-
                 // Izin Sistem dan Latar Belakang
-                "android.permission.FOREGROUND_SERVICE" -> izinScore += 0.4f // Menjalankan layanan di latar depan, sering digunakan malware untuk terus berjalan.
+                "android.permission.FOREGROUND_SERVICE" -> izinScore +=  0.4f // Menjalankan layanan di latar depan, sering digunakan malware untuk terus berjalan.
                 "android.permission.WAKE_LOCK" -> izinScore += 0.3f // Menjaga perangkat tetap aktif, digunakan malware untuk tetap berjalan di latar belakang.
-
 
                 // Izin Biometrik dan Sensor
                 "android.permission.USE_BIOMETRIC" -> izinScore += 0.4f // Menggunakan data biometrik, sangat sensitif.
                 "android.permission.BODY_SENSORS" -> izinScore += 0.3f // Mengakses sensor tubuh, risiko sedang.
-                "android.permission.ACTIVITY_RECOGNITION" -> izinScore += 0.2f // Mengenali aktivitas fisik, risiko moderat.
-
+                "android.permission.ACTIVITY_RECOGNITION" -> izinScore += 0.2f // Mengenali aktivitas fisik, risiko sedang.
 
                 // Izin Lain
                 "android.permission.REQUEST_INSTALL_PACKAGES" -> izinScore += 0.5f // Menginstal aplikasi, sering digunakan malware untuk menyebarkan dirinya.
             }
         }
 
-        // Menghitung total skor berdasarkan asal unduh, izin, dan pemantauan sumber daya
-        val predictionScore = asalDownloadScore + izinScore + dataUsageInLastMonth + malwareScore
+        // Mengurangi skor untuk aplikasi resmi
+        val predictionScore = asalDownloadScore + izinScore + dataUsageInLastMonth + malwareScore + sizeScore
+
+        // Mengurangi skor untuk aplikasi resmi
+        if (officialApps.values.contains(packageName)) {
+            return when {
+                predictionScore >= 9.0 -> predictionScore - 5.0f
+                predictionScore >= 8.0 -> predictionScore - 4.0f
+                predictionScore >= 7.0 -> predictionScore - 3.0f
+                predictionScore >= 6.0 -> predictionScore - 2.0f
+                predictionScore >= 4.5 -> predictionScore - 1.0f
+                else -> predictionScore
+            }
+        }
+
         return predictionScore
+    }
+
+    // Deteksi ukuran aplikasi yang tidak wajar
+    private fun detectAppSize(size: Long): Float {
+        return when {
+            size < 1024 * 5 -> 3.0f // Terlalu kecil (kurang dari 5 MB)
+            size > 1024 * 120 -> 3.0f // Terlalu besar (lebih dari 120 MB)
+            else -> 0.0f // Ukuran normal
+        }
     }
 
     // Skor berdasarkan pemantauan sumber daya
     private fun detectMalware(packageName: String): Float {
-        // Mengakses layanan ActivityManager untuk mendapatkan informasi tentang proses yang berjalan
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val processes = activityManager.runningAppProcesses
 
         var cpuUsage = 0L
         var memoryUsage = 0L
 
-        // Memeriksa setiap proses yang berjalan
         for (processInfo in processes) {
-            // Jika nama paket aplikasi dari proses sesuai dengan yang dicari
             if (processInfo.processName == packageName) {
-                // Mendapatkan informasi memori dari proses menggunakan Debug.MemoryInfo
                 val pInfo = Debug.MemoryInfo()
                 Debug.getMemoryInfo(pInfo)
-                // Mengambil penggunaan CPU dan memori total dalam KB
                 cpuUsage = pInfo.getTotalPss().toLong()
                 memoryUsage = pInfo.getTotalPss().toLong()
                 break
             }
         }
 
-        // Menghitung skor deteksi malware berdasarkan penggunaan CPU dan memori
         var malwareScore = 0.0f
-        // Menyesuaikan ambang batas dan logika penilaian berdasarkan kebutuhan
-        // Jika penggunaan CPU lebih dari 500 KB, tambahkan 0.5 ke skor
         if (cpuUsage > 500) {
             malwareScore += 0.5f
         }
-        // Jika penggunaan memori lebih dari 500 MB (dalam KB), tambahkan 0.5 ke skor
-        if (memoryUsage > 500 * 1024) { // 500 MB dalam KB
+        if (memoryUsage > 500 * 1024) {
             malwareScore += 0.5f
         }
 
         return malwareScore
     }
 
-    private fun getScanningResultStyled(predictionScore: Float): CharSequence {
-        return when {
-            predictionScore >= 5.6f -> HtmlCompat.fromHtml("<font color='#FF1400'><b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
-            predictionScore >= 5.0f -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
-            else -> HtmlCompat.fromHtml("<font color='#00B438'> Normal</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+    // Daftar aplikasi resmi dengan nama paketnya
+    val officialApps = mapOf(
+        // Media Sosial
+        "Facebook" to "com.facebook.katana", "Instagram" to "com.instagram.android", "WhatsApp" to "com.whatsapp",
+        "WhatsApp Business" to "com.whatsapp.w4b", "Twitter" to "com.twitter.android", "YouTube" to "com.google.android.youtube",
+        "Snapchat" to "com.snapchat.android", "TikTok" to "com.zhiliaoapp.musically", "Telegram" to "org.telegram.messenger",
+        "Pinterest" to "com.pinterest", "LinkedIn" to "com.linkedin.android", "Discord" to "com.discord",
+
+        // Aplikasi Streaming
+        "Netflix" to "com.netflix.mediaclient", "Spotify" to "com.spotify.music",
+
+        // Aplikasi Video Conferencing
+        "Zoom" to "us.zoom.videomeetings", "Google Meet" to "com.google.android.apps.meetings",
+        "Microsoft Teams" to "com.microsoft.teams", "Skype" to "com.skype.raider",
+        "Cisco Webex Meetings" to "com.cisco.webex.meetings",
+
+        // Aplikasi Produktivitas
+        "Trello" to "com.trello", "Dropbox" to "com.getdropbox.android", "Adobe Acrobat Reader" to "com.adobe.reader",
+        "Google Maps" to "com.google.android.apps.maps",
+
+        // Aplikasi E-Commerce
+        "Tokopedia" to "com.tokopedia.tkpd", "Tokopedia Seller" to "com.tokopedia.sellerapp",
+        "Bukalapak" to "com.bukalapak.android", "Shopee" to "com.shopee.id",
+        "Lazada" to "com.lazada.android", "Blibli" to "com.blibli.mobile",
+        "JD.ID" to "com.jd.lib", "Zalora" to "com.zalora.android",
+
+        // Aplikasi Bank
+        "Bank Mandiri" to "com.bankmandiri.android", "Bank BCA" to "com.bca",
+        "Bank BRI" to "com.bri", "Bank CIMB Niaga" to "com.cimbniaga",
+        "Bank Danamon" to "com.danamon.android", "Bank BTN" to "com.btn.mobile",
+        "Bank Mega" to "com.bankmega.mobile", "Bank BNI" to "com.bni",
+
+        // Aplikasi Dompet Digital
+        "OVO" to "com.ovoin", "GoPay" to "com.gojek.app", "DANA" to "com.dana",
+        "LinkAja" to "com.linkaja", "PayPal" to "com.paypal.android.p2pmobile",
+
+        // Game Terpercaya
+        "PUBG Mobile" to "com.tencent.ig", "Call of Duty: Mobile" to "com.activision.callofduty.shooter",
+        "Mobile Legends: Bang Bang" to "com.mobile.legends", "Genshin Impact" to "com.miHoYo.GenshinImpact",
+        "Clash of Clans" to "com.supercell.clashofclans",
+
+        // Aplikasi Pengeditan
+        "Canva" to "com.canva.editor", "Adobe Photoshop Express" to "com.adobe.photoshopexpress",
+        "PicsArt" to "com.picsart.studio", "Snapseed" to "com.niksoftware.snapseed",
+        "InShot" to "com.camerasideas.instashot", "KineMaster" to "com.nexstreaming.app.kinemasterfree",
+        "VivaVideo" to "com.quvideo.vivavideo", "FilmoraGo" to "com.wondershare.filmorago",
+        "Adobe Lightroom" to "com.adobe.lrmobile"
+    )
+
+    // Deteksi nama aplikasi mencurigakan
+    private fun detectSuspiciousAppName(appName: String, packageName: String): Float {
+        var score = 0.0f
+
+        // Kriteria panjang nama
+        if (appName.length > 20) {
+            score += 0.5f // Skor tinggi untuk nama aplikasi yang terlalu panjang
         }
+
+        // Kriteria penggunaan angka
+        if (appName.matches(Regex(".*\\d.*"))) {
+            score += 0.5f // Skor untuk nama aplikasi yang mengandung angka
+        }
+
+        // Kriteria penggunaan kata kunci mencurigakan
+        val suspiciousKeywords = listOf("hack", "free", "download", "crack", "virus", "malware", "spy", "trojan", "phishing", "scam", "fake", "premium", "unlock", "keygen", "bypass")
+        for (keyword in suspiciousKeywords) {
+            if (appName.contains(keyword, ignoreCase = true)) {
+                score += 1.0f // Skor tinggi untuk nama aplikasi yang mengandung kata kunci mencurigakan
+                break // Hentikan pencarian setelah menemukan satu kata kunci
+            }
+        }
+
+        // Kriteria penggunaan karakter khusus
+        if (appName.matches(Regex(".*[!@#$%^&*(),.?\":{}|<>].*"))) {
+            score += 0.5f // Skor untuk nama aplikasi yang mengandung karakter khusus
+        }
+
+        // Kriteria kombinasi kata yang tidak biasa
+        if (appName.split(" ").size > 3) {
+            score += 0.5f // Skor untuk nama aplikasi yang terdiri dari lebih dari 3 kata
+        }
+
+        // Kriteria penggunaan huruf kapital yang tidak biasa
+        if (appName.matches(Regex(".*[A-Z]{2,}.*"))) {
+            score += 0.5f // Skor untuk nama aplikasi yang mengandung huruf kapital berlebihan
+        }
+
+        // Kriteria nama yang mirip dengan aplikasi populer
+        for ((popularApp, officialPackage) in officialApps) {
+            if (appName.contains(popularApp, ignoreCase = true) && packageName != officialPackage) {
+                score += 5.0f // Skor tinggi untuk nama aplikasi yang mirip dengan aplikasi populer, tetapi bukan aplikasi resmi
+                break // Hentikan pencarian setelah menemukan satu aplikasi populer
+            }
+        }
+
+        // Kriteria penggunaan kata "official"
+        if (appName.contains("official", ignoreCase = true)) {
+            score += 0.5f // Skor untuk nama aplikasi yang mengandung kata "official"
+        }
+
+        // Kriteria penggunaan kata "beta"
+        if (appName.contains("beta", ignoreCase = true)) {
+            score += 0.5f // Skor untuk nama aplikasi yang mengandung kata "beta"
+        }
+
+        // Kriteria penggunaan kata "new"
+        if (appName.contains("new", ignoreCase = true)) {
+            score += 0.5f // Skor untuk nama aplikasi yang mengandung kata "new"
+        }
+
+        // Jika aplikasi resmi terdeteksi, kurangi skor
+        if (officialApps.containsValue(packageName)) {
+            score = 0.0f // Set skor ke 0 jika aplikasi resmi terdeteksi
+        }
+
+        return score
     }
 
+    private fun getScanningResultStyled(finalPredictionScore: Float): CharSequence {
+        return when {
+            finalPredictionScore >= 5.5 -> HtmlCompat.fromHtml("<font color='#FF1400'>< b><b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            finalPredictionScore >= 5.0 -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            else -> HtmlCompat.fromHtml("<font color='#00B438'> Normal </font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+    }
 }

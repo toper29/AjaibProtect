@@ -282,7 +282,7 @@
                 android:id="@+id/permissionsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Izin yang dibutuhkan akan tampil di sini."
+                android:text="Izin yang dibutuhkan."
                 android:textSize="18sp"
                 android:scrollbars="vertical"
                 android:layout_marginBottom="16dp" />

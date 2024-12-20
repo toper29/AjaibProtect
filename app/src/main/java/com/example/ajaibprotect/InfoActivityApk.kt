@@ -305,48 +305,52 @@ class InfoActivityApk : AppCompatActivity() {
         // Media Sosial
         "Facebook" to "com.facebook.katana", "Instagram" to "com.instagram.android", "WhatsApp" to "com.whatsapp",
         "WhatsApp Business" to "com.whatsapp.w4b", "Twitter" to "com.twitter.android", "YouTube" to "com.google.android.youtube",
-        "Snapchat" to "com.snapchat.android", "TikTok" to "com.zhiliaoapp.musically", "Telegram" to "org.telegram.messenger",
-        "Pinterest" to "com.pinterest", "LinkedIn" to "com.linkedin.android", "Discord" to "com.discord",
+        "TikTok" to "com.ss.android.ugc.trill", "Telegram" to "org.telegram.messenger", "Pinterest" to "com.pinterest",
+        "LinkedIn" to "com.linkedin.android", "Discord" to "com.discord",
 
         // Aplikasi Streaming
         "Netflix" to "com.netflix.mediaclient", "Spotify" to "com.spotify.music",
 
         // Aplikasi Video Conferencing
         "Zoom" to "us.zoom.videomeetings", "Google Meet" to "com.google.android.apps.meetings",
-        "Microsoft Teams" to "com.microsoft.teams", "Skype" to "com.skype.raider",
-        "Cisco Webex Meetings" to "com.cisco.webex.meetings",
+        "Microsoft Teams" to "com.microsoft.teams", "Skype" to "com.skype.raider", "Cisco Webex Meetings" to "com.cisco.webex.meetings",
 
         // Aplikasi Produktivitas
-        "Trello" to "com.trello", "Dropbox" to "com.getdropbox.android", "Adobe Acrobat Reader" to "com.adobe.reader",
-        "Google Maps" to "com.google.android.apps.maps",
+        "Trello" to "com.trello", "Dropbox" to "com.dropbox.android", "Adobe Acrobat Reader" to "com.adobe.reader",
+        "Google Maps" to "com.google.android.apps.maps", "Google Drive" to "com.google.android.apps.docs",
+        "Google Docs" to "com.google.android.apps.docs.editors.docs", "Google Sheets" to "com.google.android.apps.docs.editors.sheets",
+        "Google Slides" to "com.google.android.apps.docs.editors.slides", "Microsoft Office" to "com.microsoft.office.officehubrow",
+        "Microsoft Word" to "com.microsoft.office.word", "Microsoft Excel" to "com.microsoft.office.excel",
+        "Microsoft PowerPoint" to "com.microsoft.office.powerpoint", "OneNote" to "com.microsoft.office.onenote", "Microsoft To-Do" to "com.microsoft.todos",
 
         // Aplikasi E-Commerce
-        "Tokopedia" to "com.tokopedia.tkpd", "Tokopedia Seller" to "com.tokopedia.sellerapp",
-        "Bukalapak" to "com.bukalapak.android", "Shopee" to "com.shopee.id",
-        "Lazada" to "com.lazada.android", "Blibli" to "com.blibli.mobile",
-        "JD.ID" to "com.jd.lib", "Zalora" to "com.zalora.android",
+        "Tokopedia" to "com.tokopedia.tkpd", "Tokopedia Seller" to "com.tokopedia.sellerapp", "Bukalapak" to "com.bukalapak.android",
+        "Shopee" to "com.shopee.id", "Lazada" to "com.lazada.android", "Blibli" to "blibli.mobile.commerce",
+        "JD.ID" to "com.jd.id", "Zalora" to "com.zalora.android",
 
         // Aplikasi Bank
-        "Bank Mandiri" to "com.bankmandiri.android", "Bank BCA" to "com.bca",
-        "Bank BRI" to "com.bri", "Bank CIMB Niaga" to "com.cimbniaga",
-        "Bank Danamon" to "com.danamon.android", "Bank BTN" to "com.btn.mobile",
-        "Bank Mega" to "com.bankmega.mobile", "Bank BNI" to "com.bni",
+        "Bank Mandiri" to "com.bankmandiri.mandirionline", "Bank BCA" to "com.bca", "Bank BRI" to "bri.mobile", "Bank CIMB Niaga" to "com.cimbniaga.movingforward",
+        "Bank Danamon" to "com.danamon.go", "Bank BTN" to "com.btn.mobilebanking", "Bank Mega" to "com.bankmega.mobile", "Bank BNI" to "com.bni46.mobilebanking",
 
         // Aplikasi Dompet Digital
-        "OVO" to "com.ovoin", "GoPay" to "com.gojek.app", "DANA" to "com.dana",
-        "LinkAja" to "com.linkaja", "PayPal" to "com.paypal.android.p2pmobile",
+        "OVO" to "ovo.id", "GoPay" to "com.gojek.app", "DANA" to "id.dana", "LinkAja" to "com.telkomsel.tcash", "PayPal" to "com.paypal.android.p2pmobile",
 
         // Game Terpercaya
-        "PUBG Mobile" to "com.tencent.ig", "Call of Duty: Mobile" to "com.activision.callofduty.shooter",
-        "Mobile Legends: Bang Bang" to "com.mobile.legends", "Genshin Impact" to "com.miHoYo.GenshinImpact",
-        "Clash of Clans" to "com.supercell.clashofclans",
+        "PUBG Mobile" to "com.tencent.ig", "Call of Duty: Mobile" to "com.activision.callofduty.shooter", "Mobile Legends: Bang Bang" to "com.mobile.legends",
+        "Genshin Impact" to "com.miHoYo.GenshinImpact", "Clash of Clans" to "com.supercell.clashofclans",
 
         // Aplikasi Pengeditan
-        "Canva" to "com.canva.editor", "Adobe Photoshop Express" to "com.adobe.photoshopexpress",
-        "PicsArt" to "com.picsart.studio", "Snapseed" to "com.niksoftware.snapseed",
-        "InShot" to "com.camerasideas.instashot", "KineMaster" to "com.nexstreaming.app.kinemasterfree",
-        "VivaVideo" to "com.quvideo.vivavideo", "FilmoraGo" to "com.wondershare.filmorago",
-        "Adobe Lightroom" to "com.adobe.lrmobile"
+        "Canva" to "com.canva.editor", "Adobe Photoshop Express" to "com.adobe.psmobile", "PicsArt" to "com.picsart.studio",
+        "Snapseed" to "com.niksoftware.snapseed", "InShot" to "com.camerasideas.instashot", "KineMaster" to "com.nexstreaming.app.kinemasterfree",
+        "VivaVideo" to "com.quvideo.vivavideo", "FilmoraGo" to "com.wondershare.filmorago", "Adobe Lightroom" to "com.adobe.lrmobile",
+
+        // Aplikasi Resmi Google
+        "Gmail" to "com.google.android.gm", "Google Chrome" to "com.android.chrome", "Google Photos" to "com.google.android.apps.photos",
+        "Google Calendar" to "com.google.android.calendar", "Google Keep" to "com.google.android.keep",
+
+        // Aplikasi Resmi Microsoft
+        "Outlook" to "com.microsoft.office.outlook", "OneDrive" to "com.microsoft.skydrive", "Microsoft Authenticator" to "com.azure.authenticator"
+
     )
 
     // Deteksi nama aplikasi mencurigakan

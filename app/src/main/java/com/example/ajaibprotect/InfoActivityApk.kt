@@ -177,7 +177,7 @@ class InfoActivityApk : AppCompatActivity() {
     private fun calculatePredictionScore(asalDownload: String, permissions: List<String>, packageName: String, dataUsageInLastMonth: Float, malwareScore: Float, sizeScore: Float): Float {
         var asalDownloadScore = when (asalDownload) {
             "Google Play Store" -> 0.1f
-            "WhatsApp" -> 0.7f
+            "WhatsApp" -> 0.3f
             "Telegram" -> 0.7f
             "Google Chrome" -> 0.6f
             "Browser" -> 0.6f
@@ -247,9 +247,12 @@ class InfoActivityApk : AppCompatActivity() {
         // Mengurangi skor untuk aplikasi resmi
         val predictionScore = asalDownloadScore + izinScore + dataUsageInLastMonth + malwareScore + sizeScore
 
+
+
         // Mengurangi skor untuk aplikasi resmi
         if (officialApps.values.contains(packageName)) {
             return when {
+                predictionScore >= 10.0 -> predictionScore - 5.0f
                 predictionScore >= 9.0 -> predictionScore - 5.0f
                 predictionScore >= 8.0 -> predictionScore - 4.0f
                 predictionScore >= 7.0 -> predictionScore - 3.0f
@@ -333,7 +336,7 @@ class InfoActivityApk : AppCompatActivity() {
         "Bank Danamon" to "com.danamon.go", "Bank BTN" to "com.btn.mobilebanking", "Bank Mega" to "com.bankmega.mobile", "Bank BNI" to "com.bni46.mobilebanking",
 
         // Aplikasi Dompet Digital
-        "OVO" to "ovo.id", "GoPay" to "com.gojek.app", "DANA" to "id.dana", "LinkAja" to "com.telkomsel.tcash", "PayPal" to "com.paypal.android.p2pmobile",
+        "OVO" to "ovo.id", "GoPay" to "com.gojek.gopay", "DANA" to "id.dana", "LinkAja" to "com.telkomsel.tcash", "PayPal" to "com.paypal.android.p2pmobile",
 
         // Game Terpercaya
         "PUBG Mobile" to "com.tencent.ig", "Call of Duty: Mobile" to "com.activision.callofduty.shooter", "Mobile Legends: Bang Bang" to "com.mobile.legends",
@@ -424,9 +427,9 @@ class InfoActivityApk : AppCompatActivity() {
 
     private fun getScanningResultStyled(finalPredictionScore: Float): CharSequence {
         return when {
-            finalPredictionScore >= 5.5 -> HtmlCompat.fromHtml("<font color='#FF1400'>< b><b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            finalPredictionScore >= 5.5 -> HtmlCompat.fromHtml("<font color='#FF1400'>< b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             finalPredictionScore >= 5.0 -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
-            else -> HtmlCompat.fromHtml("<font color='#00B438'> Normal </font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            else -> HtmlCompat.fromHtml("<font color='#00B438'>  Normal </font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
     }
 }

@@ -333,7 +333,7 @@ class InfoActivityApk : AppCompatActivity() {
 
         // Aplikasi Bank
         "Bank Mandiri" to "com.bankmandiri.mandirionline", "Bank BCA" to "com.bca", "Bank BRI" to "bri.mobile", "Bank CIMB Niaga" to "com.cimbniaga.movingforward",
-        "Bank Danamon" to "com.danamon.go", "Bank BTN" to "com.btn.mobilebanking", "Bank Mega" to "com.bankmega.mobile", "Bank BNI" to "com.bni46.mobilebanking",
+        "Bank Danamon" to "com.danamon.go", "Bank BTN" to "com.btn.mobilebanking", "Bank Mega" to "com.bankmega.mobile", "BNIMobilenew" to "src.com.bni",
 
         // Aplikasi Dompet Digital
         "OVO" to "ovo.id", "GoPay" to "com.gojek.gopay", "DANA" to "id.dana", "LinkAja" to "com.telkomsel.tcash", "PayPal" to "com.paypal.android.p2pmobile",
@@ -427,7 +427,7 @@ class InfoActivityApk : AppCompatActivity() {
 
     private fun getScanningResultStyled(finalPredictionScore: Float): CharSequence {
         return when {
-            finalPredictionScore >= 5.5 -> HtmlCompat.fromHtml("<font color='#FF1400'>< b> Malware</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            finalPredictionScore >= 5.5 -> HtmlCompat.fromHtml("<font color='#FF1400'> Malware</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             finalPredictionScore >= 5.0 -> HtmlCompat.fromHtml("<font color='#EDAE00'> Warning</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             else -> HtmlCompat.fromHtml("<font color='#00B438'>  Normal </font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         }

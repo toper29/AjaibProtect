@@ -14,37 +14,48 @@ class TipsAndSupportActivity : AppCompatActivity() {
 
         val textView = findViewById<TextView>(R.id.textView)
         textView.text = """
-            Tips tetap aman saat daring dan menghindar dari malware
+            Tips Mengatasi Malware pada Aplikasi Android
             
-            1. Gunakan antivirus yang bagus dan tetap up-to-date. 
-            Sangat penting untuk menggunakan antivirus berkualitas baik dan selalu memperbaruinya agar tetap terdepan dalam ancaman dunia maya terbaru.
-            
-            2. Selalu perbarui perangkat lunak dan sistem operasi. 
-            Selalu perbarui sistem operasi dan aplikasi Anda. Setiap kali pembaruan dirilis untuk perangkat Anda, unduh dan instal segera. Pembaruan ini sering mencakup perbaikan keamanan, tambalan kerentanan, dan pemeliharaan lain yang diperlukan.
-            
-            3. Berhati-hatilah saat memasang program dan aplikasi. 
-            Perhatikan baik-baik layar penginstalan dan perjanjian lisensi saat menginstal perangkat lunak. Opsi penginstalan kustom atau lanjutan sering mengungkapkan perangkat lunak pihak ketiga yang juga sedang diinstal. Berhati-hatilah dalam setiap tahap proses dan pastikan Anda tahu apa yang Anda setujui sebelum mengklik "Berikutnya".
-            
-            4. Instal pemblokir iklan. 
-            Gunakan pemblokir konten berbasis browser, seperti AdGuard. Pemblokir konten membantu menghentikan iklan berbahaya, Trojan, phishing, dan konten tidak diinginkan lainnya yang mungkin tidak dapat dihentikan oleh produk antivirus saja.
-            
-            5. Berhati-hatilah dengan apa yang Anda unduh. 
-            Tujuan utama penjahat dunia maya adalah mengelabui Anda agar mengunduh malware—program atau aplikasi yang membawa malware atau mencoba mencuri informasi. Malware ini dapat disamarkan sebagai aplikasi: mulai dari game populer hingga sesuatu yang memeriksa lalu lintas atau cuaca.
-            
-            6. Waspadai orang yang mencoba menipu Anda. 
-            Baik itu email, ponsel, messenger, atau aplikasi lainnya, selalu waspada dan waspada terhadap seseorang yang mencoba mengelabui Anda agar mengeklik tautan atau membalas pesan. Ingatlah bahwa memalsukan nomor telepon itu mudah, jadi nama atau nomor yang dikenal tidak membuat pesan menjadi lebih tepercaya.
-            
-            7. Cadangkan data Anda. 
-            Cadangkan data Anda sesering mungkin dan periksa apakah data cadangan Anda dapat dipulihkan. Anda dapat melakukan ini secara manual pada stik HDD/USB eksternal, atau secara otomatis menggunakan perangkat lunak pencadangan. Ini juga merupakan cara terbaik untuk melawan ransomware. Jangan pernah menghubungkan drive cadangan ke komputer jika Anda menduga bahwa komputer tersebut terinfeksi malware.
-            
-            8. Pilih kata sandi yang kuat. 
-            Gunakan kata sandi yang kuat dan unik untuk setiap akun Anda. Hindari penggunaan informasi pribadi atau kata-kata yang mudah ditebak dalam kata sandi Anda. Aktifkan autentikasi dua faktor (2FA) di akun Anda jika memungkinkan.
-            
-            9. Hati-hati di mana Anda mengklik. 
-            Berhati-hatilah saat mengklik tautan atau mengunduh lampiran dari sumber yang tidak dikenal. Ini berpotensi mengandung malware atau penipuan phishing.
-            
-            10. Jangan gunakan perangkat lunak bajakan. 
-            Hindari penggunaan program berbagi file Peer-to-Peer (P2P), keygen, crack, dan perangkat lunak bajakan lainnya yang sering kali dapat membahayakan data, privasi, atau keduanya.
+            1.Hapus Aplikasi yang Mencurigakan
+             Jika kamu merasa ada aplikasi yang aneh atau nggak pernah diunduh tapi muncul di perangkatmu, segera hapus. Pergi ke Pengaturan > Aplikasi > Aplikasi Terinstal, cari aplikasi yang mencurigakan, lalu pilih Uninstall.
+
+
+            2.Matikan Koneksi Internet
+             Putuskan Wi-Fi atau matikan data seluler. Ini mencegah malware mengunduh data tambahan atau mengirim informasi pribadi ke server penjahat siber.
+
+
+            3.Masuk ke Safe Mode
+             Restart perangkatmu dalam mode aman (Safe Mode). Caranya biasanya dengan menahan tombol daya, lalu tekan dan tahan opsi Matikan Daya hingga muncul pilihan Safe Mode. Mode ini hanya menjalankan aplikasi sistem bawaan, sehingga malware tidak aktif.
+
+
+            4.Gunakan Pemindai Keamanan Bawaan
+             Banyak perangkat Android memiliki fitur pemindai keamanan bawaan, seperti Google Play Protect. Buka aplikasi Play Store, pilih Profil > Play Protect, lalu jalankan pemindaian.
+
+
+            5.Perbarui Sistem Operasi
+             Pastikan perangkat Android kamu selalu menjalankan versi terbaru dari sistem operasi. Pembaruan ini sering mengandung perbaikan untuk celah keamanan.
+
+
+            6.Periksa Izin Aplikasi
+             Buka pengaturan izin aplikasi di perangkatmu (Pengaturan > Privasi > Izin Aplikasi) dan periksa aplikasi mana saja yang punya akses ke kamera, mikrofon, lokasi, atau data lainnya. Hapus izin dari aplikasi mencurigakan.
+
+
+            7.Gunakan Alat Penghapus Malware
+             Unduh aplikasi penghapus malware terpercaya dari Google Play Store, seperti Malwarebytes atau Bitdefender Mobile Security, untuk membersihkan perangkat.
+
+
+            8.Reset ke Pengaturan Pabrik (Factory Reset)
+             Kalau malware tetap nggak bisa dihapus, reset perangkat ke pengaturan pabrik. Sebelum melakukannya, cadangkan semua data penting ke penyimpanan eksternal. Caranya:
+               Buka Pengaturan > Sistem > Reset > Reset Data Pabrik.
+               
+               
+            9.Aktifkan Otentikasi Dua Faktor (2FA)
+             Segera amankan akun Google atau aplikasi lain dengan 2FA. Ini penting kalau malware sudah mencuri data login kamu.
+
+
+            10.Hindari Aplikasi dari Sumber Tidak Resmi
+             Jangan pernah mengunduh aplikasi dari luar Google Play Store atau menggunakan aplikasi bajakan. Aplikasi dari sumber tak resmi sering disusupi malware.
+
         """.trimIndent()
 
         TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(

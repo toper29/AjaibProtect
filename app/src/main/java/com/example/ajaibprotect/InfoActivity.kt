@@ -12,27 +12,27 @@ class InfoActivity : AppCompatActivity() {
 
         val textView = findViewById<TextView>(R.id.textView)
         textView.text = """
-            AjaibProtect - Aplikasi Perlindungan Keamanan 
-            dari Lab bernama Ajaib dari Unika Atma Jaya
+            AjaibProtect - Solusi Keamanan untuk Android Anda
+            Dari Lab Ajaib Universitas Katolik Atma Jaya
             Versi 1.0
             
-            Aplikasi Deteksi Malware adalah solusi anda untuk melindungi perangkat Android Anda dari ancaman malware yang merusak. Dikembangkan dengan teknologi terdepan, aplikasi ini memberikan keamanan tingkat lanjut untuk menjaga privasi dan kinerja perangkat Anda tetap optimal.
+            AjaibProtect adalah aplikasi deteksi malware canggih yang dirancang untuk melindungi perangkat Android Anda dari ancaman keamanan. Dengan teknologi mutakhir dan metode hybrid analysis, AjaibProtect memberikan perlindungan terbaik untuk menjaga privasi dan kinerja perangkat Anda tetap optimal.
+            
             Fitur Utama:
-            1.  Pendeteksian Malware yang Canggih:
-            Aplikasi ini menggunakan algoritma canggih untuk mendeteksi dan menghapus berbagai jenis malware yang mengancam perangkat Anda.
+            1.Pendeteksian Malware yang Akurat:
+            Aplikasi ini memanfaatkan metode hybrid analysis (statis dan dinamis) untuk mendeteksi berbagai ancaman keamanan, termasuk malware tersembunyi.
+            2.Analisis Menyeluruh dan Cepat:
+            Lakukan pemindaian menyeluruh untuk mendeteksi izin mencurigakan, pola nama aplikasi yang aneh, hingga aplikasi berisiko tinggi berdasarkan pola penggunaan sumber daya.
+            3.Pemantauan Aktif:
+            Dengan fitur pemantauan izin, data, dan sumber daya aplikasi, AjaibProtect membantu Anda melakukan pemantauan perangkat secara berkala untuk menjaga keamanan dan melindungi data pribadi Anda.
+            4.Identifikasi Aplikasi Berbahaya:
+            Secara otomatis mendeteksi dan memberi peringatan tentang aplikasi yang berpotensi berbahaya, sehingga Anda dapat menghapusnya sebelum menimbulkan kerusakan.
+            5.Efisiensi Perangkat:
+            Selain perlindungan, AjaibProtect membantu meningkatkan kinerja perangkat Anda dengan mengidentifikasi aplikasi yang menggunakan sumber daya secara berlebihan.
             
-            2. Pemindaian Cepat dan Mendalam: 
-            Lakukan pemindaian cepat atau mendalam untuk menemukan dan menghapus malware dengan efektif.
-            
-            3. Proteksi Aktif: 
-            Aplikasi kami memberikan perlindungan 24/7 dengan pembaruan otomatis dan pemantauan yang terus-menerus.
-            
-            4. Blokir Aplikasi Berbahaya: 
-            Identifikasi dan blokir aplikasi berbahaya sebelum mereka dapat merusak perangkat Anda.
-            
-            5. Peningkatan Kinerja: 
-            Selain deteksi malware, aplikasi ini juga membantu meningkatkan kinerja perangkat dengan membersihkan file cache yang tidak perlu dan mengoptimalkan penggunaan memori.
-            -Toper 2019-
+            Catatan untuk Pengguna:
+            Aplikasi bawaan sistem (system apps) sering kali memerlukan akses ke berbagai izin untuk menjalankan fungsi penting perangkat. Hal ini dapat menyebabkan skor risiko menjadi lebih
+
         """.trimIndent()
 
         TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(

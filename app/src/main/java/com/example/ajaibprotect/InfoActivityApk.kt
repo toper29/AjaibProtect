@@ -319,7 +319,7 @@ class InfoActivityApk : AppCompatActivity() {
         "Microsoft Teams" to "com.microsoft.teams", "Skype" to "com.skype.raider", "Cisco Webex Meetings" to "com.cisco.webex.meetings",
 
         // Aplikasi Produktivitas
-        "Trello" to "com.trello", "Dropbox" to "com.dropbox.android", "Adobe Acrobat Reader" to "com.adobe.reader",
+        "Google" to "com.google.android.googlequ", "Google Play Store" to "com.android.vending", "Trello" to "com.trello", "Dropbox" to "com.dropbox.android", "Adobe Acrobat Reader" to "com.adobe.reader",
         "Google Maps" to "com.google.android.apps.maps", "Google Drive" to "com.google.android.apps.docs",
         "Google Docs" to "com.google.android.apps.docs.editors.docs", "Google Sheets" to "com.google.android.apps.docs.editors.sheets",
         "Google Slides" to "com.google.android.apps.docs.editors.slides", "Microsoft Office" to "com.microsoft.office.officehubrow",
@@ -354,7 +354,42 @@ class InfoActivityApk : AppCompatActivity() {
         // Aplikasi Resmi Microsoft
         "Outlook" to "com.microsoft.office.outlook", "OneDrive" to "com.microsoft.skydrive", "Microsoft Authenticator" to "com.azure.authenticator",
 
-        "AjaibProtect" to "com.example.ajaibprotect"
+        // Aplikasi Sistem Bawaan Android
+        "Android System WebView" to "com.google.android.webview", "Google Play Services" to "com.google.android.gms",
+        "Google Play Store" to "com.android.vending", "Google Assistant" to "com.google.android.apps.googleassistant",
+        "Google App" to "com.google.android.googlequicksearchbox", "Google Keyboard (Gboard)" to "com.google.android.inputmethod.latin",
+        "Google Contacts" to "com.google.android.contacts", "Google Phone (Dialer)" to "com.google.android.dialer",
+        "Google Messages" to "com.google.android.apps.messaging", "Google Clock" to "com.google.android.deskclock",
+        "Google Calculator" to "com.google.android.calculator", "Google Files" to "com.google.android.apps.nbu.files",
+        "Google News" to "com.google.android.apps.magazines", "Google Podcasts" to "com.google.android.apps.podcasts",
+        "Google TV" to "com.google.android.videos", "Android Accessibility Suite" to "com.google.android.marvin.talkback",
+
+        // Aplikasi Kamera & Galeri
+        "Google Camera" to "com.google.android.GoogleCamera", "Samsung Camera" to "com.sec.android.app.camera",
+        "OnePlus Camera" to "com.oneplus.camera", "MIUI Camera" to "com.android.camera",
+        "Samsung Gallery" to "com.sec.android.gallery3d", "OnePlus Gallery" to "com.oneplus.gallery",
+        "MIUI Gallery" to "com.miui.gallery",
+
+        // Aplikasi Penyimpanan & File Manager
+        "My Files (Samsung)" to "com.sec.android.app.myfiles", "File Manager (Xiaomi)" to "com.mi.android.globalFileexplorer",
+
+        // Aplikasi Email
+        "Samsung Email" to "com.samsung.android.email.provider", "MIUI Mail" to "com.android.email",
+
+        // Aplikasi Lainnya
+        "Samsung Notes" to "com.samsung.android.app.notes", "OnePlus Notes" to "com.oneplus.notes",
+        "MIUI Notes" to "com.miui.notes", "Samsung Members" to "com.samsung.android.voc",
+        "OnePlus Community" to "net.oneplus.community",
+
+        // Aplikasi Multimedia Bawaan
+        "Samsung Music" to "com.samsung.music", "Samsung Video Player" to "com.samsung.android.videoplayer",
+        "MIUI Music" to "com.miui.player", "MIUI Video Player" to "com.miui.videoplayer",
+
+        // Aplikasi Resmi Vendor Chipset
+        "Qualcomm QDMS" to "com.qualcomm.qti.qms.service.telemetry", "Mediatek Engineering Mode" to "com.mediatek.engineermode",
+
+
+        "AjaibProtect" to "com.example.ajaibprotect",
 
     )
 

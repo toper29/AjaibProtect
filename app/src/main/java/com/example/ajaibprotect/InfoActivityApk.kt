@@ -352,7 +352,9 @@ class InfoActivityApk : AppCompatActivity() {
         "Google Calendar" to "com.google.android.calendar", "Google Keep" to "com.google.android.keep",
 
         // Aplikasi Resmi Microsoft
-        "Outlook" to "com.microsoft.office.outlook", "OneDrive" to "com.microsoft.skydrive", "Microsoft Authenticator" to "com.azure.authenticator"
+        "Outlook" to "com.microsoft.office.outlook", "OneDrive" to "com.microsoft.skydrive", "Microsoft Authenticator" to "com.azure.authenticator",
+
+        "AjaibProtect" to "com.example.ajaibprotect"
 
     )
 
